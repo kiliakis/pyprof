@@ -1,0 +1,16 @@
+*.pyc
+
+*.project
+
+*.pydevproject
+
+result.dll
+result.so
+sync_rad.dll
+
+/__doc/build/
+/__TEST_CASES/output_files
+/PERSONAL_FOLDER/
+
+
+
