@@ -10,7 +10,7 @@
 from functools import wraps
 
 
-def papiprof(type=['cache']):
+def papiprof(type=['cache'], filename='', classname=''):
     import pypapi
     import numpy as np
     events = []
@@ -22,6 +22,7 @@ def papiprof(type=['cache']):
             # pypapi.Event.L1_DCA,
             pypapi.Event.L2_DCM,
             pypapi.Event.L2_DCA,
+            pypapi.Event.L3_TCR,
             # pypapi.Event.L3_TCM,
             pypapi.Event.L3_DCA
         ]
@@ -59,10 +60,19 @@ def papiprof(type=['cache']):
             pypapi.start_counters(events)
             result = func(*args, **kw)
             pypapi.stop_counters(counts)
+            key = filename + '.' + classname + '.' + func.__name__
             # print(counts)
-            print('\n\nHardware Counters For: %s' % func.__name__)
+            if(key not in papiprof.counters):
+                papiprof.counters[key] = {}
+            # print('\n\nHardware Counters For: %s' % func.__name__)
+            # papiprof.counters[key].append((event_dscr, counts))
             for e, c in zip(event_dscr, counts):
-                print(e.name, c)
+                if e.name not in papiprof.counters[key]:
+                    papiprof.counters[key][e.name] = []
+                papiprof.counters[key][e.name].append(c)
+                # print(e.name, c)
             return result
         return wrapper
     return decorator
+
+papiprof.counters = {}
