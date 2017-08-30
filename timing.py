@@ -18,10 +18,15 @@ def timeit(filename='', classname=''):
             ts = time.time()
             result = f(*args, **kw)
             te = time.time()
-            key = filename + '.' + classname + '.' + f.__name__
+            key = f.__name__
+            if classname:
+                key = classname + '.' + key
+            if filename:
+                key = filename + '.' + key
+            # key = filename + '.' + classname + '.' + f.__name__
             if(key not in timeit.times):
                 timeit.times[key] = []
-            timeit.times[key].append((te-ts)*1000)
+            timeit.times[key].append((te - ts) * 1000)
             # print('%s %2.2f ms' % (key, (te - ts) * 1000))
             return result
         return timed
