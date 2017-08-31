@@ -1,0 +1,68 @@
+--------------------------------------------------------------------------------
+| FP_ASSIST                                                                    |
+|            X87 floating-point assists                                        |
+|     :X87_OUTPUT                                                              |
+|            Number of X87 FP assists due to output values                     |
+|     :X87_INPUT                                                               |
+|            Number of X87 FP assists due to input values                      |
+|     :SIMD_OUTPUT                                                             |
+|            Number of SIMD FP assists due to output values                    |
+|     :SIMD_INPUT                                                              |
+|            Number of SIMD FP assists due to input values                     |
+|     :ANY                                                                     |
+|            Cycles with any input/output SEE or FP assists                    |
+|     :ALL                                                                     |
+|            Cycles with any input and output SSE or FP assist                 |
+--------------------------------------------------------------------------------
+| INST_RETIRED                                                                 |
+|            Number of instructions retired (Precise Event)                    |
+|     :ANY_P                                                                   |
+|            Number of instructions retired. General Counter - architectural ev|
+|            ent                                                               |
+|     :ALL                                                                     |
+|            Precise instruction retired event with HW to reduce effect of PEBS|
+|             shadow in IP distribution (Precise Event)                        |
+|     :TOTAL_CYCLES                                                            |
+|            Number of cycles using always true condition                      |
+|     :PREC_DIST                                                               |
+|            Precise instruction retired event with HW to reduce effect of PEBS|
+|             shadow in IP distribution                                        |
+|     :X87                                                                     |
+|            X87 FP operations retired with no exceptions. Also counts flows th|
+|            at have several X87 or flows that use X87 uops in the exception ha|
+|            ndling                                                            |
+--------------------------------------------------------------------------------
+| MOVE_ELIMINATION                                                             |
+|            Move Elimination                                                  |
+|     :INT_ELIMINATED                                                          |
+|            Number of integer Move Elimination candidate uops that were elimin|
+|            ated                                                              |
+|     :SIMD_ELIMINATED                                                         |
+|            Number of SIMD Move Elimination candidate uops that were eliminate|
+|            d                                                                 |
+|     :INT_NOT_ELIMINATED                                                      |
+|            Number of integer Move Elimination candidate uops that were not el|
+|            iminated                                                          |
+|     :SIMD_NOT_ELIMINATED                                                     |
+|            Number of SIMD Move Elimination candidate uops that were not elimi|
+|            nated                                                             |
+--------------------------------------------------------------------------------
+| OTHER_ASSISTS                                                                |
+|            Software assist                                                   |
+|     :AVX_TO_SSE                                                              |
+|            Number of transitions from AVX-256 to legacy SSE when penalty appl|
+|            icable                                                            |
+|     :SSE_TO_AVX                                                              |
+|            Number of transitions from legacy SSE to AVX-256 when penalty appl|
+|            icable                                                            |
+|     :ANY_WB_ASSIST                                                           |
+|            Number of times any microcode assist is invoked by HW upon uop wri|
+|            teback                                                            |
+--------------------------------------------------------------------------------
+| AVX                                                                          |
+|            Counts AVX instructions                                           |
+|     :ALL                                                                     |
+|            Approximate counts of AVX and AVX2 256-bit instructions, including|
+|             non-arithmetic instructions, loads, and stores. May count non-AVX|
+|             instructions using 256-bit operations                            |
+--------------------------------------------------------------------------------

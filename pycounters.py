@@ -129,9 +129,9 @@ def papiprof(type='cache', filename='', classname=''):
 
             if(key not in papiprof.counters):
                 papiprof.counters[key] = {}
-                papiprof.times[key] = []
+                papiprof.counters[key][b'time'] = []
 
-            papiprof.times[key].append((te - ts) * 1000)
+            papiprof.counters[key][b'time'].append((te - ts) * 1000)
 
             for e, c in zip(events, eventValues):
                 if e not in papiprof.counters[key]:
@@ -144,5 +144,19 @@ def papiprof(type='cache', filename='', classname=''):
 
 
 papiprof.counters = {}
-papiprof.times = {}
+# papiprof.times = {}
 papiprof.eventSet = {}
+
+
+def papiprof_print():
+        # print('function\tcalls\taverage_time(ms)\tstd(%)')
+        # for k, v in sorted(papiprof.times.items()):
+        #     print('%s\t%d\t%.3f\t%.2f' %
+        #           (k, len(v), np.mean(v), 100.0*np.std(v)/np.mean(v)))
+
+    print('function\tcounter\taverage_value\tstd(%)\tcalls')
+    for func, counters in sorted(papiprof.counters.items()):
+        for counter, v in counters.items():
+            print('%s\t%s\t%.1f\t%.2f\t%d' %
+                  (func, counter.decode(), np.mean(v),
+                   100.0*np.std(v)/np.mean(v), len(v)))
