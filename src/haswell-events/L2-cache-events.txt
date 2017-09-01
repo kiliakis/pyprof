@@ -1,0 +1,141 @@
+Available native events and hardware information.
+--------------------------------------------------------------------------------
+PAPI Version             : 5.5.1.0
+Vendor string and code   : GenuineIntel (1)
+Model string and code    : Intel(R) Xeon(R) CPU E5-2683 v3 @ 2.00GHz (63)
+CPU Revision             : 2.000000
+CPUID Info               : Family: 6  Model: 63  Stepping: 2
+CPU Max Megahertz        : 3000
+CPU Min Megahertz        : 1200
+Hdw Threads per core     : 2
+Cores per Socket         : 14
+Sockets                  : 2
+NUMA Nodes               : 2
+CPUs per Node            : 28
+Total CPUs               : 56
+Running in a VM          : no
+Number Hardware Counters : 11
+Max Multiplex Counters   : 384
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+| L2_DEMAND_RQSTS                                                              |
+|            Demand Data Read requests to L2                                   |
+|     :WB_HIT                                                                  |
+|            WB requests that hit L2 cache                                     |
+--------------------------------------------------------------------------------
+| L2_LINES_IN                                                                  |
+|            L2 lines allocated                                                |
+|     :I                                                                       |
+|            L2 cache lines in I state filling L2                              |
+|     :S                                                                       |
+|            L2 cache lines in S state filling L2                              |
+|     :E                                                                       |
+|            L2 cache lines in E state filling L2                              |
+|     :ALL                                                                     |
+|            L2 cache lines filling L2                                         |
+|     :ANY                                                                     |
+|            L2 cache lines filling L2                                         |
+--------------------------------------------------------------------------------
+| L2_LINES_OUT                                                                 |
+|            L2 lines evicted                                                  |
+|     :DEMAND_CLEAN                                                            |
+|            Number of clean L2 cachelines evicted by demand                   |
+|     :DEMAND_DIRTY                                                            |
+|            Number of dirty L2 cachelines evicted by demand                   |
+--------------------------------------------------------------------------------
+| L2_RQSTS                                                                     |
+|            L2 requests                                                       |
+|     :DEMAND_DATA_RD_MISS                                                     |
+|            Demand Data Read requests that miss L2 cache                      |
+|     :DEMAND_DATA_RD_HIT                                                      |
+|            Demand Data Read requests that hit L2 cache                       |
+|     :DEMAND_RFO_MISS                                                         |
+|            RFO requests that miss L2 cache                                   |
+|     :RFO_MISS                                                                |
+|            RFO requests that miss L2 cache                                   |
+|     :DEMAND_RFO_HIT                                                          |
+|            RFO requests that hit L2 cache                                    |
+|     :RFO_HIT                                                                 |
+|            RFO requests that hit L2 cache                                    |
+|     :CODE_RD_MISS                                                            |
+|            L2 cache misses when fetching instructions                        |
+|     :ALL_DEMAND_MISS                                                         |
+|            All demand requests that miss the L2 cache                        |
+|     :CODE_RD_HIT                                                             |
+|            L2 cache hits when fetching instructions, code reads              |
+|     :L2_PF_MISS                                                              |
+|            Requests from the L2 hardware prefetchers that miss L2 cache      |
+|     :PF_MISS                                                                 |
+|            Requests from the L1/L2/L3 hardware prefetchers or Load software p|
+|            refetches that miss L2 cache                                      |
+|     :MISS                                                                    |
+|            All requests that miss the L2 cache                               |
+|     :L2_PF_HIT                                                               |
+|            Requests from the L2 hardware prefetchers that hit L2 cache       |
+|     :PF_HIT                                                                  |
+|            Requests from the L2 hardware prefetchers that hit L2 cache       |
+|     :ALL_DEMAND_DATA_RD                                                      |
+|            Any data read request to L2 cache                                 |
+|     :ALL_RFO                                                                 |
+|            Any data RFO request to L2 cache                                  |
+|     :ALL_CODE_RD                                                             |
+|            Any code read request to L2 cache                                 |
+|     :ALL_DEMAND_REFERENCES                                                   |
+|            All demand requests to L2 cache                                   |
+|     :ALL_PF                                                                  |
+|            Any L2 HW prefetch request to L2 cache                            |
+|     :REFERENCES                                                              |
+|            All requests to L2 cache                                          |
+--------------------------------------------------------------------------------
+| L2_TRANS                                                                     |
+|            L2 transactions                                                   |
+|     :DEMAND_DATA_RD                                                          |
+|            Demand Data Read requests that access L2 cache                    |
+|     :RFO                                                                     |
+|            RFO requests that access L2 cache                                 |
+|     :CODE_RD                                                                 |
+|            L2 cache accesses when fetching instructions                      |
+|     :ALL_PF                                                                  |
+|            L2 or L3 HW prefetches that access L2 cache, including rejects    |
+|     :L1D_WB                                                                  |
+|            L1D writebacks that access L2 cache                               |
+|     :L2_FILL                                                                 |
+|            L2 fill requests that access L2 cache                             |
+|     :L2_WB                                                                   |
+|            L2 writebacks that access L2 cache                                |
+|     :ALL_REQUESTS                                                            |
+|            Transactions accessing L2 pipe                                    |
+--------------------------------------------------------------------------------
+| MEM_LOAD_UOPS_RETIRED                                                        |
+|            Retired load uops (Precise Event)                                 |
+|     :L1_HIT                                                                  |
+|            Retired load uops with L1 cache hits as data source               |
+|     :L2_HIT                                                                  |
+|            Retired load uops with L2 cache hits as data source               |
+|     :L3_HIT                                                                  |
+|            Retired load uops with L3 cache hits as data source               |
+|     :L1_MISS                                                                 |
+|            Retired load uops which missed the L1D                            |
+|     :L2_MISS                                                                 |
+|            Retired load uops which missed the L2. Unknown data source exclude|
+|            d                                                                 |
+|     :L3_MISS                                                                 |
+|            Retired load uops which missed the L3                             |
+|     :HIT_LFB                                                                 |
+|            Retired load uops which missed L1 but hit line fill buffer (LFB)  |
+--------------------------------------------------------------------------------
+PAPI_L2_DCM  0x80000002  Yes   Yes  Level 2 data cache misses
+PAPI_L2_ICM  0x80000003  Yes   No   Level 2 instruction cache misses
+PAPI_L2_TCM  0x80000007  Yes   No   Level 2 cache misses
+PAPI_L2_LDM  0x80000019  Yes   No   Level 2 load misses
+PAPI_L2_STM  0x8000001a  Yes   No   Level 2 store misses
+PAPI_L2_DCA  0x80000041  Yes   No   Level 2 data cache accesses
+PAPI_L2_DCR  0x80000044  Yes   No   Level 2 data cache reads
+PAPI_L2_DCW  0x80000047  Yes   No   Level 2 data cache writes
+PAPI_L2_ICH  0x8000004a  Yes   No   Level 2 instruction cache hits
+PAPI_L2_ICA  0x8000004d  Yes   No   Level 2 instruction cache accesses
+PAPI_L2_ICR  0x80000050  Yes   No   Level 2 instruction cache reads
+PAPI_L2_TCA  0x80000059  Yes   Yes  Level 2 total cache accesses
+PAPI_L2_TCR  0x8000005c  Yes   Yes  Level 2 total cache reads
+PAPI_L2_TCW  0x8000005f  Yes   No   Level 2 total cache writes

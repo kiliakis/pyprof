@@ -1,0 +1,76 @@
+Available native events and hardware information.
+--------------------------------------------------------------------------------
+PAPI Version             : 5.5.1.0
+Vendor string and code   : GenuineIntel (1)
+Model string and code    : Intel(R) Xeon(R) CPU E5-2683 v3 @ 2.00GHz (63)
+CPU Revision             : 2.000000
+CPUID Info               : Family: 6  Model: 63  Stepping: 2
+CPU Max Megahertz        : 3000
+CPU Min Megahertz        : 1200
+Hdw Threads per core     : 2
+Cores per Socket         : 14
+Sockets                  : 2
+NUMA Nodes               : 2
+CPUs per Node            : 28
+Total CPUs               : 56
+Running in a VM          : no
+Number Hardware Counters : 11
+Max Multiplex Counters   : 384
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+| MEM_LOAD_UOPS_RETIRED                                                        |
+|            Retired load uops (Precise Event)                                 |
+|     :L1_HIT                                                                  |
+|            Retired load uops with L1 cache hits as data source               |
+|     :L2_HIT                                                                  |
+|            Retired load uops with L2 cache hits as data source               |
+|     :L3_HIT                                                                  |
+|            Retired load uops with L3 cache hits as data source               |
+|     :L1_MISS                                                                 |
+|            Retired load uops which missed the L1D                            |
+|     :L2_MISS                                                                 |
+|            Retired load uops which missed the L2. Unknown data source exclude|
+|            d                                                                 |
+|     :L3_MISS                                                                 |
+|            Retired load uops which missed the L3                             |
+|     :HIT_LFB                                                                 |
+|            Retired load uops which missed L1 but hit line fill buffer (LFB)  |
+--------------------------------------------------------------------------------
+| MEM_TRANS_RETIRED                                                            |
+|            Memory transactions retired (Precise Event)                       |
+|     :LOAD_LATENCY                                                            |
+|            Memory load instructions retired above programmed clocks, minimum |
+|            threshold value is 3 (Precise Event and ldlat required)           |
+|     :LATENCY_ABOVE_THRESHOLD                                                 |
+|            Memory load instructions retired above programmed clocks, minimum |
+|            threshold value is 3 (Precise Event and ldlat required)           |
+--------------------------------------------------------------------------------
+| MEM_UOPS_RETIRED                                                             |
+|            Memory uops retired (Precise Event)                               |
+|     :STLB_MISS_LOADS                                                         |
+|            Load uops with true STLB miss retired to architected path         |
+|     :STLB_MISS_STORES                                                        |
+|            Store uops with true STLB miss retired to architected path        |
+|     :LOCK_LOADS                                                              |
+|            Load uops with locked access retired                              |
+|     :SPLIT_LOADS                                                             |
+|            Line-splitted load uops retired                                   |
+|     :SPLIT_STORES                                                            |
+|            Line-splitted store uops retired                                  |
+|     :ALL_LOADS                                                               |
+|            All load uops retired                                             |
+|     :ALL_STORES                                                              |
+|            All store uops retired                                            |
+--------------------------------------------------------------------------------
+| MISALIGN_MEM_REF                                                             |
+|            Misaligned memory references                                      |
+|     :LOADS                                                                   |
+|            Speculative cache-line split load uops dispatched to the L1D      |
+|     :STORES                                                                  |
+|            Speculative cache-line split store-address uops dispatched to L1D |
+--------------------------------------------------------------------------------
+PAPI_LD_INS  0x80000035  Yes   No   Load instructions
+PAPI_SR_INS  0x80000036  Yes   No   Store instructions
+PAPI_LST_INS 0x8000003c  Yes   Yes  Load/store instructions completed
+

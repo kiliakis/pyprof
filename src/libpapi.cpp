@@ -8,26 +8,53 @@ extern "C" {
     {
         /* Initialize the PAPI library */
         int retval = PAPI_library_init(PAPI_VER_CURRENT);
-        // int EventSet = PAPI_NULL;
-        // long_long values[1];
         *eventSet = PAPI_NULL;
 
         if (retval != PAPI_VER_CURRENT && retval > 0) {
-            fprintf(stderr, "PAPI library version mismatch!\n");
+            fprintf(stderr, "PAPI version error\n");
+            PAPI_perror(PAPI_strerror(retval));
             return retval;
         }
 
         if (retval < 0) {
-            fprintf(stderr, "Initialization error!\n");
+            fprintf(stderr, "PAPI version error\n");
+
+            PAPI_perror(PAPI_strerror(retval));
+            return retval;
+        }
+        /* Initialize the multiplexed events */
+        retval = PAPI_multiplex_init();
+        if (retval != PAPI_OK) {
+            fprintf(stderr, "PAPI multiplex init error\n");
+            PAPI_perror(PAPI_strerror(retval));
             return retval;
         }
 
         /* Create the Event Set */
         retval = PAPI_create_eventset(eventSet);
         if ( retval != PAPI_OK) {
-            fprintf(stderr, "Eventset creation error %d!\n", retval);
+            fprintf(stderr, "PAPI create_eventset error\n");
+            PAPI_perror(PAPI_strerror(retval));
             return retval;
         }
+
+        /* Convert the eventSet */
+        retval = PAPI_assign_eventset_component(*eventSet, 0);
+        if (retval != PAPI_OK) {
+            fprintf(stderr, "PAPI assign eventSet error\n");
+            PAPI_perror(PAPI_strerror(retval));
+            return retval;
+        }
+
+        /* Convert the eventSet */
+        retval = PAPI_set_multiplex(*eventSet);
+        if (retval != PAPI_OK) {
+            fprintf(stderr, "PAPI set multiplex error\n");
+            PAPI_perror(PAPI_strerror(retval));
+            return retval;
+        }
+
+
 
         return 0;
 
@@ -38,11 +65,11 @@ extern "C" {
     {
         int retval;
         for (int i = 0; i < N; i++) {
-            // printf("Adding event %s\n", eventNames[i]);
             retval = PAPI_add_named_event(eventSet, eventNames[i]);
             if (retval != PAPI_OK) {
-                fprintf(stderr, "PAPI event %s was not added, error %d!\n",
-                        eventNames[i], retval);
+                // fprintf(stderr, "PAPI add_named_event error\n");
+                fprintf(stderr, "PAPI event %s was not added!\n", eventNames[i]);
+                PAPI_perror(PAPI_strerror(retval));
                 return retval;
             }
         }
@@ -56,7 +83,8 @@ extern "C" {
         /* Start counting events in the Event Set */
         int retval = PAPI_start(eventSet);
         if (retval != PAPI_OK) {
-            fprintf(stderr, "PAPI start error %d!\n", retval);
+            fprintf(stderr, "PAPI start error\n");
+            PAPI_perror(PAPI_strerror(retval));
             return retval;
         }
         return 0;
@@ -68,7 +96,8 @@ extern "C" {
         /* Stop the counting of events in the Event Set */
         int retval = PAPI_stop(eventSet, values);
         if ( retval != PAPI_OK) {
-            fprintf(stderr, "PAPI stop error %d!\n", retval);
+            fprintf(stderr, "PAPI stop error\n");
+            PAPI_perror(PAPI_strerror(retval));
             return retval;
         }
         return 0;
@@ -79,7 +108,8 @@ extern "C" {
         /* Reset the counting events in the Event Set */
         int retval = PAPI_reset(eventSet);
         if (retval != PAPI_OK) {
-            fprintf(stderr, "PAPI reset error %d!\n", retval);
+            fprintf(stderr, "PAPI reset error\n");
+            PAPI_perror(PAPI_strerror(retval));
             return retval;
         }
         return 0;
@@ -92,7 +122,8 @@ extern "C" {
         int retval = PAPI_read(eventSet, values);
         /* Read the counting events in the Event Set */
         if (retval != PAPI_OK) {
-            fprintf(stderr, "PAPI Read error %d!\n", retval);
+            fprintf(stderr, "PAPI read error\n");
+            PAPI_perror(PAPI_strerror(retval));
             return retval;
         }
         return 0;
@@ -103,7 +134,8 @@ extern "C" {
         int retval = PAPI_destroy_eventset(eventSet);
         /* Read the counting events in the Event Set */
         if (retval != PAPI_OK) {
-            fprintf(stderr, "PAPI destroy eventset error %d!\n", retval);
+            fprintf(stderr, "PAPI destroy error\n");
+            PAPI_perror(PAPI_strerror(retval));
             return retval;
         }
         return 0;

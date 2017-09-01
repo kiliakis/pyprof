@@ -1,27 +1,29 @@
+Available native events and hardware information.
 --------------------------------------------------------------------------------
-| ix86arch::BRANCH_INSTRUCTIONS_RETIRED                                        |
-|            count branch instructions at retirement. Specifically, this event |
-|            counts the retirement of the last micro-op of a branch instruction|
-|                                                                              |
+PAPI Version             : 5.5.1.0
+Vendor string and code   : GenuineIntel (1)
+Model string and code    : Intel(R) Xeon(R) CPU E5-2683 v3 @ 2.00GHz (63)
+CPU Revision             : 2.000000
+CPUID Info               : Family: 6  Model: 63  Stepping: 2
+CPU Max Megahertz        : 3000
+CPU Min Megahertz        : 1200
+Hdw Threads per core     : 2
+Cores per Socket         : 14
+Sockets                  : 2
+NUMA Nodes               : 2
+CPUs per Node            : 28
+Total CPUs               : 56
+Running in a VM          : no
+Number Hardware Counters : 11
+Max Multiplex Counters   : 384
 --------------------------------------------------------------------------------
-| ix86arch::MISPREDICTED_BRANCH_RETIRED                                        |
-|            count mispredicted branch instructions at retirement. Specifically|
-|            , this event counts at retirement of the last micro-op of a branch|
-|             instruction in the architectural path of the execution and experi|
-|            enced misprediction in the branch prediction hardware             |
---------------------------------------------------------------------------------
---------------------------------------------------------------------------------
-| perf::PERF_COUNT_HW_BRANCH_INSTRUCTIONS                                      |
-|            PERF_COUNT_HW_BRANCH_INSTRUCTIONS                                 |
+
 --------------------------------------------------------------------------------
 | perf::BRANCH-INSTRUCTIONS                                                    |
 |            PERF_COUNT_HW_BRANCH_INSTRUCTIONS                                 |
 --------------------------------------------------------------------------------
 | perf::BRANCHES                                                               |
 |            PERF_COUNT_HW_BRANCH_INSTRUCTIONS                                 |
---------------------------------------------------------------------------------
-| perf::PERF_COUNT_HW_BRANCH_MISSES                                            |
-|            PERF_COUNT_HW_BRANCH_MISSES                                       |
 --------------------------------------------------------------------------------
 | perf::BRANCH-MISSES                                                          |
 |            PERF_COUNT_HW_BRANCH_MISSES                                       |
@@ -166,3 +168,13 @@
 |            number of near branch instructions retired that were mispredicted |
 |            and taken                                                         |
 --------------------------------------------------------------------------------
+PAPI_BR_UCN  0x8000002a  Yes   Yes  Unconditional branch instructions
+PAPI_BR_CN   0x8000002b  Yes   No   Conditional branch instructions
+PAPI_BR_TKN  0x8000002c  Yes   Yes  Conditional branch instructions taken
+PAPI_BR_NTK  0x8000002d  Yes   No   Conditional branch instructions not taken
+PAPI_BR_MSP  0x8000002e  Yes   No   Conditional branch instructions mispredicted
+PAPI_BR_PRC  0x8000002f  Yes   Yes  Conditional branch instructions correctly predicted
+PAPI_BR_INS  0x80000037  Yes   No   Branch instructions
+
+
+

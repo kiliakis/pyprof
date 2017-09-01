@@ -1,0 +1,354 @@
+Available native events and hardware information.
+--------------------------------------------------------------------------------
+PAPI Version             : 5.5.1.0
+Vendor string and code   : GenuineIntel (1)
+Model string and code    : Intel(R) Xeon(R) CPU E5-2683 v3 @ 2.00GHz (63)
+CPU Revision             : 2.000000
+CPUID Info               : Family: 6  Model: 63  Stepping: 2
+CPU Max Megahertz        : 3000
+CPU Min Megahertz        : 1200
+Hdw Threads per core     : 2
+Cores per Socket         : 14
+Sockets                  : 2
+NUMA Nodes               : 2
+CPUs per Node            : 28
+Total CPUs               : 56
+Running in a VM          : no
+Number Hardware Counters : 11
+Max Multiplex Counters   : 384
+--------------------------------------------------------------------------------
+
+===============================================================================
+ Native Events in Component: perf_event
+===============================================================================
+| ix86arch::UNHALTED_CORE_CYCLES                                               |
+|            count core clock cycles whenever the clock signal on the specific |
+|            core is running (not halted)                                      |
+--------------------------------------------------------------------------------
+| ix86arch::INSTRUCTION_RETIRED                                                |
+|            count the number of instructions at retirement. For instructions t|
+|            hat consists of multiple micro-ops, this event counts the retireme|
+|            nt of the last micro-op of the instruction                        |
+--------------------------------------------------------------------------------
+| ix86arch::UNHALTED_REFERENCE_CYCLES                                          |
+|            count reference clock cycles while the clock signal on the specifi|
+|            c core is running. The reference clock operates at a fixed frequen|
+|            cy, irrespective of core frequency changes due to performance stat|
+|            e transitions                                                     |
+--------------------------------------------------------------------------------
+| perf::PERF_COUNT_HW_CPU_CYCLES                                               |
+|            PERF_COUNT_HW_CPU_CYCLES                                          |
+--------------------------------------------------------------------------------
+| perf::CYCLES                                                                 |
+|            PERF_COUNT_HW_CPU_CYCLES                                          |
+--------------------------------------------------------------------------------
+| perf::CPU-CYCLES                                                             |
+|            PERF_COUNT_HW_CPU_CYCLES                                          |
+--------------------------------------------------------------------------------
+| perf::PERF_COUNT_HW_INSTRUCTIONS                                             |
+|            PERF_COUNT_HW_INSTRUCTIONS                                        |
+--------------------------------------------------------------------------------
+| perf::INSTRUCTIONS                                                           |
+|            PERF_COUNT_HW_INSTRUCTIONS                                        |
+--------------------------------------------------------------------------------
+| perf::PERF_COUNT_HW_REF_CPU_CYCLES                                           |
+|            PERF_COUNT_HW_REF_CPU_CYCLES                                      |
+--------------------------------------------------------------------------------
+| perf::REF-CYCLES                                                             |
+|            PERF_COUNT_HW_REF_CPU_CYCLES                                      |
+--------------------------------------------------------------------------------
+| perf::PERF_COUNT_SW_CPU_CLOCK                                                |
+|            PERF_COUNT_SW_CPU_CLOCK                                           |
+--------------------------------------------------------------------------------
+| perf::CPU-CLOCK                                                              |
+|            PERF_COUNT_SW_CPU_CLOCK                                           |
+--------------------------------------------------------------------------------
+| perf::PERF_COUNT_SW_TASK_CLOCK                                               |
+|            PERF_COUNT_SW_TASK_CLOCK                                          |
+--------------------------------------------------------------------------------
+| perf::TASK-CLOCK                                                             |
+|            PERF_COUNT_SW_TASK_CLOCK                                          |
+--------------------------------------------------------------------------------
+| UNHALTED_CORE_CYCLES                                                         |
+|            Count core clock cycles whenever the clock signal on the specific |
+|            core is running (not halted)                                      |
+--------------------------------------------------------------------------------
+| UNHALTED_REFERENCE_CYCLES                                                    |
+|            Unhalted reference cycles                                         |
+--------------------------------------------------------------------------------
+| INSTRUCTION_RETIRED                                                          |
+|            Number of instructions at retirement                              |
+--------------------------------------------------------------------------------
+| INSTRUCTIONS_RETIRED                                                         |
+|            This is an alias for INSTRUCTION_RETIRED                          |
+--------------------------------------------------------------------------------
+| CPL_CYCLES                                                                   |
+|            Unhalted core cycles at a specific ring level                     |
+|     :RING0                                                                   |
+|            Unhalted core cycles when the thread is in ring 0                 |
+|     :RING123                                                                 |
+|            Unhalted core cycles when thread is in rings 1, 2, or 3           |
+|     :RING0_TRANS                                                             |
+|            Number of intervals between processor halts while thread is in rin|
+|            g 0                                                               |
+--------------------------------------------------------------------------------
+| CPU_CLK_THREAD_UNHALTED                                                      |
+|            Count core clock cycles whenever the clock signal on the specific |
+|            core is running (not halted)                                      |
+|     :REF_XCLK                                                                |
+|            Count Xclk pulses (100Mhz) when the core is unhalted              |
+|     :REF_XCLK_ANY                                                            |
+|            Count Xclk pulses 100Mhz) when the at least one thread on the phys|
+|            ical core is unhalted                                             |
+|     :REF_P                                                                   |
+|            Cycles when the core is unhalted (count at 100 Mhz)               |
+|     :THREAD_P                                                                |
+|            Cycles when thread is not halted                                  |
+|     :ONE_THREAD_ACTIVE                                                       |
+|            Counts Xclk (100Mhz) pulses when this thread is unhalted and the o|
+|            ther thread is halted                                             |
+--------------------------------------------------------------------------------
+| CPU_CLK_UNHALTED                                                             |
+|            Count core clock cycles whenever the clock signal on the specific |
+|            core is running (not halted)                                      |
+--------------------------------------------------------------------------------
+| CYCLE_ACTIVITY                                                               |
+|            Stalled cycles                                                    |
+|     :CYCLES_L2_PENDING                                                       |
+|            Cycles with pending L2 miss loads (must use with HT off only)     |
+|     :CYCLES_LDM_PENDING                                                      |
+|            Cycles with pending memory loads                                  |
+|     :CYCLES_L1D_PENDING                                                      |
+|            Cycles with pending L1D load cache misses                         |
+|     :STALLS_L1D_PENDING                                                      |
+|            Executions stalls due to pending L1D load cache misses            |
+|     :STALLS_L2_PENDING                                                       |
+|            Execution stalls due to L2 pending loads (must use with HT off onl|
+|            y)                                                                |
+|     :STALLS_LDM_PENDING                                                      |
+|            Execution stalls due to memory subsystem                          |
+|     :CYCLES_NO_EXECUTE                                                       |
+|            Cycles during which no instructions were executed in the execution|
+|             stage of the pipeline                                            |
+--------------------------------------------------------------------------------
+| IDQ                                                                          |
+|            IDQ operations                                                    |
+|     :EMPTY                                                                   |
+|            Cycles the Instruction Decode Queue (IDQ) is empty                |
+|     :MITE_UOPS                                                               |
+|            Number of uops delivered to Instruction Decode Queue (IDQ) from MI|
+|            TE path                                                           |
+|     :DSB_UOPS                                                                |
+|            Number of uops delivered to Instruction Decode Queue (IDQ) from De|
+|            code Stream Buffer (DSB) path                                     |
+|     :MS_DSB_UOPS                                                             |
+|            Uops initiated by Decode Stream Buffer (DSB) that are being delive|
+|            red to Instruction Decode Queue (IDQ) while Microcode Sequencer (M|
+|            S) is busy                                                        |
+|     :MS_MITE_UOPS                                                            |
+|            Uops initiated by MITE and delivered to Instruction Decode Queue (|
+|            IDQ) while Microcode Sequencer (MS) is busy                       |
+|     :MS_UOPS                                                                 |
+|            Number of Uops were delivered into Instruction Decode Queue (IDQ) |
+|            from MS, initiated by Decode Stream Buffer (DSB) or MITE          |
+|     :MS_UOPS_CYCLES                                                          |
+|            Number of cycles that Uops were delivered into Instruction Decode |
+|            Queue (IDQ) when MS_Busy, initiated by Decode Stream Buffer (DSB) |
+|            or MITE                                                           |
+|     :MS_SWITCHES                                                             |
+|            Number of cycles that Uops were delivered into Instruction Decode |
+|            Queue (IDQ) when MS_Busy, initiated by Decode Stream Buffer (DSB) |
+|            or MITE                                                           |
+|     :MITE_UOPS_CYCLES                                                        |
+|            Cycles when uops are being delivered to Instruction Decode Queue (|
+|            IDQ) from MITE path                                               |
+|     :DSB_UOPS_CYCLES                                                         |
+|            Cycles when uops are being delivered to Instruction Decode Queue (|
+|            IDQ) from Decode Stream Buffer (DSB) path                         |
+|     :MS_DSB_UOPS_CYCLES                                                      |
+|            Cycles when uops initiated by Decode Stream Buffer (DSB) are being|
+|             delivered to Instruction Decode Queue (IDQ) while Microcode Seque|
+|            ncer (MS) is busy                                                 |
+|     :MS_DSB_OCCUR                                                            |
+|            Deliveries to Instruction Decode Queue (IDQ) initiated by Decode S|
+|            tream Buffer (DSB) while Microcode Sequencer (MS) is busy         |
+|     :ALL_DSB_CYCLES_4_UOPS                                                   |
+|            Cycles Decode Stream Buffer (DSB) is delivering 4 Uops            |
+|     :ALL_DSB_CYCLES_ANY_UOPS                                                 |
+|            Cycles Decode Stream Buffer (DSB) is delivering any Uop           |
+|     :ALL_MITE_CYCLES_4_UOPS                                                  |
+|            Cycles MITE is delivering 4 Uops                                  |
+|     :ALL_MITE_CYCLES_ANY_UOPS                                                |
+|            Cycles MITE is delivering any Uop                                 |
+|     :ALL_MITE_UOPS                                                           |
+|            Number of uops delivered to Instruction Decode Queue (IDQ) from an|
+|            y path                                                            |
+--------------------------------------------------------------------------------
+| IDQ_UOPS_NOT_DELIVERED                                                       |
+|            Uops not delivered                                                |
+|     :CORE                                                                    |
+|            Count number of non-delivered uops to Resource Allocation Table (R|
+|            AT)                                                               |
+|     :CYCLES_0_UOPS_DELIV_CORE                                                |
+|            Cycles per thread when 4 or more uops are not delivered to the Res|
+|            ource Allocation Table (RAT) when backend is not stalled          |
+|     :CYCLES_LE_1_UOP_DELIV_CORE                                              |
+|            Cycles per thread when 3 or more uops are not delivered to the Res|
+|            ource Allocation Table (RAT) when backend is not stalled          |
+|     :CYCLES_LE_2_UOP_DELIV_CORE                                              |
+|            Cycles with less than 2 uops delivered by the front end           |
+|     :CYCLES_LE_3_UOP_DELIV_CORE                                              |
+|            Cycles with less than 3 uops delivered by the front end           |
+|     :CYCLES_FE_WAS_OK                                                        |
+|            Cycles Front-End (FE) delivered 4 uops or Resource Allocation Tabl|
+|            e (RAT) was stalling FE                                           |
+--------------------------------------------------------------------------------
+| INST_RETIRED                                                                 |
+|            Number of instructions retired (Precise Event)                    |
+|     :ANY_P                                                                   |
+|            Number of instructions retired. General Counter - architectural ev|
+|            ent                                                               |
+|     :ALL                                                                     |
+|            Precise instruction retired event with HW to reduce effect of PEBS|
+|             shadow in IP distribution (Precise Event)                        |
+|     :PREC_DIST                                                               |
+|            Precise instruction retired event with HW to reduce effect of PEBS|
+|             shadow in IP distribution                                        |
+|     :X87                                                                     |
+|            X87 FP operations retired with no exceptions. Also counts flows th|
+|            at have several X87 or flows that use X87 uops in the exception ha|
+|            ndling                                                            |
+--------------------------------------------------------------------------------
+| RESOURCE_STALLS                                                              |
+|            Cycles Allocation is stalled due to Resource Related reason       |
+|     :ANY                                                                     |
+|            Cycles Allocation is stalled due to Resource Related reason       |
+|     :ALL                                                                     |
+|            Cycles Allocation is stalled due to Resource Related reason       |
+|     :RS                                                                      |
+|            Stall cycles caused by absence of eligible entries in Reservation |
+|            Station (RS)                                                      |
+|     :SB                                                                      |
+|            Cycles Allocator is stalled due to Store Buffer full (not includin|
+|            g draining from synch)                                            |
+|     :ROB                                                                     |
+|            ROB full stall cycles                                             |
+--------------------------------------------------------------------------------
+| RS_EVENTS                                                                    |
+|            Reservation Station                                               |
+|     :EMPTY_CYCLES                                                            |
+|            Cycles the Reservation Station (RS) is empty for this thread      |
+|     :EMPTY_END                                                               |
+|            Counts number of time the Reservation Station (RS) goes from empty|
+|             to non-empty                                                     |
+--------------------------------------------------------------------------------
+| UOPS_EXECUTED                                                                |
+|            Uops executed                                                     |
+|     :CORE                                                                    |
+|            Number of uops executed from any thread                           |
+|     :STALL_CYCLES                                                            |
+|            Number of cycles with no uops executed                            |
+|     :CYCLES_GE_1_UOP_EXEC                                                    |
+|            Cycles where at least 1 uop was executed per thread               |
+|     :CYCLES_GE_2_UOPS_EXEC                                                   |
+|            Cycles where at least 2 uops were executed per thread             |
+|     :CYCLES_GE_3_UOPS_EXEC                                                   |
+|            Cycles where at least 3 uops were executed per thread             |
+|     :CYCLES_GE_4_UOPS_EXEC                                                   |
+|            Cycles where at least 4 uops were executed per thread             |
+|     :CORE_CYCLES_GE_1                                                        |
+|            Cycles where at least 1 uop was executed from any thread          |
+|     :CORE_CYCLES_GE_2                                                        |
+|            Cycles where at least 2 uops were executed from any thread        |
+|     :CORE_CYCLES_GE_3                                                        |
+|            Cycles where at least 3 uops were executed from any thread        |
+|     :CORE_CYCLES_GE_4                                                        |
+|            Cycles where at least 4 uops were executed from any thread        |
+|     :CORE_CYCLES_NONE                                                        |
+|            Cycles where no uop is executed on any thread                     |
+--------------------------------------------------------------------------------
+| UOPS_ISSUED                                                                  |
+|            Uops issued                                                       |
+|     :ANY                                                                     |
+|            Number of Uops issued by the Resource Allocation Table (RAT) to th|
+|            e Reservation Station (RS)                                        |
+|     :ALL                                                                     |
+|            Number of Uops issued by the Resource Allocation Table (RAT) to th|
+|            e Reservation Station (RS)                                        |
+|     :FLAGS_MERGE                                                             |
+|            Number of flags-merge uops being allocated. Such uops adds delay  |
+|     :SLOW_LEA                                                                |
+|            Number of slow LEA or similar uops allocated. Such uop has 3 sourc|
+|            es regardless if result of LEA instruction or not                 |
+|     :SINGLE_MUL                                                              |
+|            Number of Multiply packed/scalar single precision uops allocated  |
+|     :STALL_CYCLES                                                            |
+|            Counts the number of cycles no uops issued by this thread         |
+|     :CORE_STALL_CYCLES                                                       |
+|            Counts the number of cycles no uops issued on this core           |
+--------------------------------------------------------------------------------
+| UOPS_RETIRED                                                                 |
+|            Uops retired (Precise Event)                                      |
+|     :ALL                                                                     |
+|            All uops that actually retired                                    |
+|     :ANY                                                                     |
+|            All uops that actually retired                                    |
+|     :RETIRE_SLOTS                                                            |
+|            number of retirement slots used non PEBS                          |
+|     :STALL_CYCLES                                                            |
+|            Cycles no executable uops retired (Precise Event)                 |
+|     :TOTAL_CYCLES                                                            |
+|            Number of cycles using always true condition applied to PEBS uops |
+|            retired event                                                     |
+|     :CORE_STALL_CYCLES                                                       |
+|            Cycles no executable uops retired on core (Precise Event)         |
+|     :STALL_OCCURRENCES                                                       |
+|            Number of transitions from stalled to unstalled execution (Precise|
+|             Event)                                                           |
+--------------------------------------------------------------------------------
+| OFFCORE_REQUESTS_OUTSTANDING                                                 |
+|            Outstanding offcore requests                                      |
+|     :ALL_DATA_RD_CYCLES                                                      |
+|            Cycles with cacheable data read transactions in the superQ (use wi|
+|            th HT off only)                                                   |
+|     :DEMAND_CODE_RD_CYCLES                                                   |
+|            Cycles with demand code reads transactions in the superQ (use with|
+|             HT off only)                                                     |
+|     :DEMAND_DATA_RD_CYCLES                                                   |
+|            Cycles with demand data read transactions in the superQ (use with |
+|            HT off only)                                                      |
+|     :ALL_DATA_RD                                                             |
+|            Cacheable data read transactions in the superQ every cycle (use wi|
+|            th HT off only)                                                   |
+|     :DEMAND_CODE_RD                                                          |
+|            Code read transactions in the superQ every cycle (use with HT off |
+|            only)                                                             |
+|     :DEMAND_DATA_RD                                                          |
+|            Demand data read transactions in the superQ every cycle (use with |
+|            HT off only)                                                      |
+|     :DEMAND_DATA_RD_GE_6                                                     |
+|            Cycles with at lesat 6 offcore outstanding demand data read reques|
+|            ts in the uncore queue                                            |
+|     :DEMAND_RFO                                                              |
+|            Outstanding RFO (store) transactions in the superQ every cycle (us|
+|            e with HT off only)                                               |
+|     :DEMAND_RFO_CYCLES                                                       |
+|            Cycles with outstanding RFO (store) transactions in the superQ (us|
+|            e with HT off only)                                               |
+--------------------------------------------------------------------------------
+| ILD_STALL                                                                    |
+|            Instruction Length Decoder stalls                                 |
+|     :LCP                                                                     |
+|            Stall caused by changing prefix length of the instruction         |
+|     :IQ_FULL                                                                 |
+|            Stall cycles due to IQ full                                       |
+--------------------------------------------------------------------------------
+PAPI_MEM_WCY 0x80000024  Yes   No   Cycles Stalled Waiting for memory writes
+PAPI_STL_ICY 0x80000025  Yes   No   Cycles with no instruction issue
+PAPI_FUL_ICY 0x80000026  Yes   Yes  Cycles with maximum instruction issue
+PAPI_STL_CCY 0x80000027  Yes   No   Cycles with no instructions completed
+PAPI_FUL_CCY 0x80000028  Yes   No   Cycles with maximum instructions completed
+PAPI_TOT_INS 0x80000032  Yes   No   Instructions completed
+PAPI_RES_STL 0x80000039  Yes   No   Cycles stalled on any resource
+PAPI_TOT_CYC 0x8000003b  Yes   No   Total cycles
+PAPI_REF_CYC 0x8000006b  Yes   No   Reference clock cycles

@@ -1,0 +1,122 @@
+Available native events and hardware information.
+--------------------------------------------------------------------------------
+PAPI Version             : 5.5.1.0
+Vendor string and code   : GenuineIntel (1)
+Model string and code    : Intel(R) Xeon(R) CPU E5-2683 v3 @ 2.00GHz (63)
+CPU Revision             : 2.000000
+CPUID Info               : Family: 6  Model: 63  Stepping: 2
+CPU Max Megahertz        : 3000
+CPU Min Megahertz        : 1200
+Hdw Threads per core     : 2
+Cores per Socket         : 14
+Sockets                  : 2
+NUMA Nodes               : 2
+CPUs per Node            : 28
+Total CPUs               : 56
+Running in a VM          : no
+Number Hardware Counters : 11
+Max Multiplex Counters   : 384
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+| perf::PERF_COUNT_HW_CACHE_L1D                                                |
+|            L1 data cache                                                     |
+|     :READ                                                                    |
+|            read access                                                       |
+|     :WRITE                                                                   |
+|            write access                                                      |
+|     :PREFETCH                                                                |
+|            prefetch access                                                   |
+|     :ACCESS                                                                  |
+|            hit access                                                        |
+|     :MISS                                                                    |
+|            miss access                                                       |
+--------------------------------------------------------------------------------
+| perf::L1-DCACHE-LOADS                                                        |
+|            L1 cache load accesses                                            |
+--------------------------------------------------------------------------------
+| perf::L1-DCACHE-LOAD-MISSES                                                  |
+|            L1 cache load misses                                              |
+--------------------------------------------------------------------------------
+| perf::L1-DCACHE-PREFETCHES                                                   |
+|            L1 cache prefetch accesses                                        |
+--------------------------------------------------------------------------------
+| perf::L1-DCACHE-PREFETCH-MISSES                                              |
+|            L1 cache prefetch misses                                          |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+| L1D_PEND_MISS                                                                |
+|            L1D pending misses                                                |
+|     :PENDING                                                                 |
+|            Cycles with L1D load misses outstanding                           |
+|     :PENDING_CYCLES                                                          |
+|            Cycles with L1D load misses outstanding                           |
+|     :OCCURRENCES                                                             |
+|            Number L1D miss outstanding                                       |
+|     :EDGE                                                                    |
+|            Number L1D miss outstanding                                       |
+|     :REQUEST_FB_FULL                                                         |
+|            Number of times a demand request was blocked due to Fill Buffer (F|
+|            B) unavailability                                                 |
+|     :FB_FULL                                                                 |
+|            Number of cycles a demand request was blocked due to Fill Buffer (|
+|            FB) unavailability                                                |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+| MEM_LOAD_UOPS_RETIRED                                                        |
+|            Retired load uops (Precise Event)                                 |
+|     :L1_HIT                                                                  |
+|            Retired load uops with L1 cache hits as data source               |
+|     :L2_HIT                                                                  |
+|            Retired load uops with L2 cache hits as data source               |
+|     :L3_HIT                                                                  |
+|            Retired load uops with L3 cache hits as data source               |
+|     :L1_MISS                                                                 |
+|            Retired load uops which missed the L1D                            |
+|     :L2_MISS                                                                 |
+|            Retired load uops which missed the L2. Unknown data source exclude|
+|            d                                                                 |
+|     :L3_MISS                                                                 |
+|            Retired load uops which missed the L3                             |
+|     :HIT_LFB                                                                 |
+|            Retired load uops which missed L1 but hit line fill buffer (LFB)  |
+--------------------------------------------------------------------------------
+| perf::PERF_COUNT_HW_CACHE_L1I                                                |
+|            L1 instruction cache                                              |
+|     :READ                                                                    |
+|            read access                                                       |
+|     :PREFETCH                                                                |
+|            prefetch access                                                   |
+|     :ACCESS                                                                  |
+|            hit access                                                        |
+|     :MISS                                                                    |
+|            miss access                                                       |
+--------------------------------------------------------------------------------
+| perf::L1-ICACHE-LOADS                                                        |
+|            L1I cache load accesses                                           |
+--------------------------------------------------------------------------------
+| perf::L1-ICACHE-LOAD-MISSES                                                  |
+|            L1I cache load misses                                             |
+--------------------------------------------------------------------------------
+| perf::L1-ICACHE-PREFETCHES                                                   |
+|            L1I cache prefetch accesses                                       |
+--------------------------------------------------------------------------------
+| perf::L1-ICACHE-PREFETCH-MISSES                                              |
+|            L1I cache prefetch misses                                         |
+--------------------------------------------------------------------------------
+| ICACHE                                                                       |
+|            Instruction Cache                                                 |
+|     :MISSES                                                                  |
+|            Number of Instruction Cache, Streaming Buffer and Victim Cache Mis|
+|            ses. Includes Uncacheable accesses                                |
+|     :HIT                                                                     |
+|            Number of Instruction Cache, Streaming Buffer and Victim Cache Rea|
+|            ds. Includes cacheable and uncacheable accesses and uncacheable fe|
+|            tches                                                             |
+|     :IFETCH_STALL                                                            |
+|            Number of cycles where a code-fetch stalled due to L1 instruction |
+|            cache miss or an iTLB miss                                        |
+--------------------------------------------------------------------------------
+PAPI_L1_DCM  0x80000000  Yes   No   Level 1 data cache misses
+PAPI_L1_ICM  0x80000001  Yes   No   Level 1 instruction cache misses
+PAPI_L1_LDM  0x80000017  Yes   No   Level 1 load misses
+PAPI_L1_STM  0x80000018  Yes   No   Level 1 store misses
+PAPI_L1_TCM  0x80000006  Yes   Yes  Level 1 cache misses

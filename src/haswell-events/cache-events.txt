@@ -1,3 +1,23 @@
+Available native events and hardware information.
+--------------------------------------------------------------------------------
+PAPI Version             : 5.5.1.0
+Vendor string and code   : GenuineIntel (1)
+Model string and code    : Intel(R) Xeon(R) CPU E5-2683 v3 @ 2.00GHz (63)
+CPU Revision             : 2.000000
+CPUID Info               : Family: 6  Model: 63  Stepping: 2
+CPU Max Megahertz        : 3000
+CPU Min Megahertz        : 1200
+Hdw Threads per core     : 2
+Cores per Socket         : 14
+Sockets                  : 2
+NUMA Nodes               : 2
+CPUs per Node            : 28
+Total CPUs               : 56
+Running in a VM          : no
+Number Hardware Counters : 11
+Max Multiplex Counters   : 384
+--------------------------------------------------------------------------------
+
 --------------------------------------------------------------------------------
 | ix86arch::LLC_REFERENCES                                                     |
 |            count each request originating from the core to reference a cache |
@@ -9,14 +29,8 @@
 |            ache. The event count may include speculation, but excludes cache |
 |            line fills due to hardware prefetch                               |
 --------------------------------------------------------------------------------
-| perf::PERF_COUNT_HW_CACHE_REFERENCES                                         |
-|            PERF_COUNT_HW_CACHE_REFERENCES                                    |
---------------------------------------------------------------------------------
 | perf::CACHE-REFERENCES                                                       |
 |            PERF_COUNT_HW_CACHE_REFERENCES                                    |
---------------------------------------------------------------------------------
-| perf::PERF_COUNT_HW_CACHE_MISSES                                             |
-|            PERF_COUNT_HW_CACHE_MISSES                                        |
 --------------------------------------------------------------------------------
 | perf::CACHE-MISSES                                                           |
 |            PERF_COUNT_HW_CACHE_MISSES                                        |
@@ -51,29 +65,6 @@
 --------------------------------------------------------------------------------
 | perf::L1-DCACHE-PREFETCH-MISSES                                              |
 |            L1 cache prefetch misses                                          |
---------------------------------------------------------------------------------
-| perf::PERF_COUNT_HW_CACHE_L1I                                                |
-|            L1 instruction cache                                              |
-|     :READ                                                                    |
-|            read access                                                       |
-|     :PREFETCH                                                                |
-|            prefetch access                                                   |
-|     :ACCESS                                                                  |
-|            hit access                                                        |
-|     :MISS                                                                    |
-|            miss access                                                       |
---------------------------------------------------------------------------------
-| perf::L1-ICACHE-LOADS                                                        |
-|            L1I cache load accesses                                           |
---------------------------------------------------------------------------------
-| perf::L1-ICACHE-LOAD-MISSES                                                  |
-|            L1I cache load misses                                             |
---------------------------------------------------------------------------------
-| perf::L1-ICACHE-PREFETCHES                                                   |
-|            L1I cache prefetch accesses                                       |
---------------------------------------------------------------------------------
-| perf::L1-ICACHE-PREFETCH-MISSES                                              |
-|            L1I cache prefetch misses                                         |
 --------------------------------------------------------------------------------
 | perf::PERF_COUNT_HW_CACHE_LL                                                 |
 |            Last level cache                                                  |
@@ -131,19 +122,6 @@
 |            hit access                                                        |
 |     :MISS                                                                    |
 |            miss access                                                       |
---------------------------------------------------------------------------------
-| ICACHE                                                                       |
-|            Instruction Cache                                                 |
-|     :MISSES                                                                  |
-|            Number of Instruction Cache, Streaming Buffer and Victim Cache Mis|
-|            ses. Includes Uncacheable accesses                                |
-|     :HIT                                                                     |
-|            Number of Instruction Cache, Streaming Buffer and Victim Cache Rea|
-|            ds. Includes cacheable and uncacheable accesses and uncacheable fe|
-|            tches                                                             |
-|     :IFETCH_STALL                                                            |
-|            Number of cycles where a code-fetch stalled due to L1 instruction |
-|            cache miss or an iTLB miss                                        |
 --------------------------------------------------------------------------------
 | L1D_PEND_MISS                                                                |
 |            L1D pending misses                                                |
@@ -381,3 +359,72 @@
 |     :STORES                                                                  |
 |            Speculative cache-line split store-address uops dispatched to L1D |
 --------------------------------------------------------------------------------
+| perf::PERF_COUNT_HW_CACHE_L1I                                                |
+|            L1 instruction cache                                              |
+|     :READ                                                                    |
+|            read access                                                       |
+|     :PREFETCH                                                                |
+|            prefetch access                                                   |
+|     :ACCESS                                                                  |
+|            hit access                                                        |
+|     :MISS                                                                    |
+|            miss access                                                       |
+--------------------------------------------------------------------------------
+| perf::L1-ICACHE-LOADS                                                        |
+|            L1I cache load accesses                                           |
+--------------------------------------------------------------------------------
+| perf::L1-ICACHE-LOAD-MISSES                                                  |
+|            L1I cache load misses                                             |
+--------------------------------------------------------------------------------
+| perf::L1-ICACHE-PREFETCHES                                                   |
+|            L1I cache prefetch accesses                                       |
+--------------------------------------------------------------------------------
+| perf::L1-ICACHE-PREFETCH-MISSES                                              |
+|            L1I cache prefetch misses                                         |
+--------------------------------------------------------------------------------
+| ICACHE                                                                       |
+|            Instruction Cache                                                 |
+|     :MISSES                                                                  |
+|            Number of Instruction Cache, Streaming Buffer and Victim Cache Mis|
+|            ses. Includes Uncacheable accesses                                |
+|     :HIT                                                                     |
+|            Number of Instruction Cache, Streaming Buffer and Victim Cache Rea|
+|            ds. Includes cacheable and uncacheable accesses and uncacheable fe|
+|            tches                                                             |
+|     :IFETCH_STALL                                                            |
+|            Number of cycles where a code-fetch stalled due to L1 instruction |
+|            cache miss or an iTLB miss                                        |
+--------------------------------------------------------------------------------
+PAPI_L1_DCM  0x80000000  Yes   No   Level 1 data cache misses
+PAPI_L1_ICM  0x80000001  Yes   No   Level 1 instruction cache misses
+PAPI_L1_LDM  0x80000017  Yes   No   Level 1 load misses
+PAPI_L1_STM  0x80000018  Yes   No   Level 1 store misses
+PAPI_L1_TCM  0x80000006  Yes   Yes  Level 1 cache misses
+PAPI_L2_DCM  0x80000002  Yes   Yes  Level 2 data cache misses
+PAPI_L2_ICM  0x80000003  Yes   No   Level 2 instruction cache misses
+PAPI_L2_TCM  0x80000007  Yes   No   Level 2 cache misses
+PAPI_L2_LDM  0x80000019  Yes   No   Level 2 load misses
+PAPI_L2_STM  0x8000001a  Yes   No   Level 2 store misses
+PAPI_L2_DCA  0x80000041  Yes   No   Level 2 data cache accesses
+PAPI_L2_DCR  0x80000044  Yes   No   Level 2 data cache reads
+PAPI_L2_DCW  0x80000047  Yes   No   Level 2 data cache writes
+PAPI_L2_ICH  0x8000004a  Yes   No   Level 2 instruction cache hits
+PAPI_L2_ICA  0x8000004d  Yes   No   Level 2 instruction cache accesses
+PAPI_L2_ICR  0x80000050  Yes   No   Level 2 instruction cache reads
+PAPI_L2_TCA  0x80000059  Yes   Yes  Level 2 total cache accesses
+PAPI_L2_TCR  0x8000005c  Yes   Yes  Level 2 total cache reads
+PAPI_L2_TCW  0x8000005f  Yes   No   Level 2 total cache writes
+PAPI_L3_TCM  0x80000008  Yes   No   Level 3 cache misses
+PAPI_L3_LDM  0x8000000e  Yes   No   Level 3 load misses
+PAPI_L3_DCA  0x80000042  Yes   Yes  Level 3 data cache accesses
+PAPI_L3_DCR  0x80000045  Yes   No   Level 3 data cache reads
+PAPI_L3_DCW  0x80000048  Yes   No   Level 3 data cache writes
+PAPI_L3_ICA  0x8000004e  Yes   No   Level 3 instruction cache accesses
+PAPI_L3_ICR  0x80000051  Yes   No   Level 3 instruction cache reads
+PAPI_L3_TCA  0x8000005a  Yes   No   Level 3 total cache accesses
+PAPI_L3_TCR  0x8000005d  Yes   Yes  Level 3 total cache reads
+PAPI_L3_TCW  0x80000060  Yes   No   Level 3 total cache writes
+PAPI_LD_INS  0x80000035  Yes   No   Load instructions
+PAPI_SR_INS  0x80000036  Yes   No   Store instructions
+PAPI_LST_INS 0x8000003c  Yes   Yes  Load/store instructions completed
+
