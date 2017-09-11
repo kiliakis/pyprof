@@ -121,9 +121,9 @@ def papiprof(types=[], filename='', classname='',
             # b'OTHER_ASSISTS:AVX_TO_SSE',
             # b'AVX:ALL'
             b'PAPI_FP_INS',
-            b'PAPI_VEC_INS',
-            b'PAPI_FP_STAL',
-            b'PAPI_FML_INS'
+            b'PAPI_VEC_INS'
+            # b'PAPI_FP_STAL'
+            # b'PAPI_FML_INS'
         ],
         'branch': [
             b'perf::BRANCHES',
@@ -165,7 +165,7 @@ def papiprof(types=[], filename='', classname='',
     events += custom_event_list
     events = np.unique(events)
 
-    if (events) and (not papiprof.eventSet):
+    if (len(events)>0) and (papiprof.eventSet is None):
         papiprof.eventSet = np.zeros(1, dtype=ct.c_int)
         papi_init(papiprof.eventSet)
         papi_add_events(papiprof.eventSet, events)
@@ -174,13 +174,13 @@ def papiprof(types=[], filename='', classname='',
         @wraps(func)
         def wrapper(*args, **kw):
             eventValues = np.zeros(len(events), dtype=ct.c_longlong)
-            if(events):
+            if(len(events)>0):
                 papi_start(papiprof.eventSet)
 
             ts = time.time()
             result = func(*args, **kw)
             te = time.time()
-            if(events):
+            if(len(events)>0):
                 papi_stop(papiprof.eventSet, eventValues)
 
             key = func.__name__
