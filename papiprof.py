@@ -28,6 +28,12 @@ preset_metrics = {
                           'CPU_CLK_UNHALTED', '/'],
     'MEMORY_BOUND': ['CYCLE_ACTIVITY:STALLS_LDM_PENDING', 'CPU_CLK_UNHALTED',
                      '/'],
+    'L2_COST': [12., 'MEM_LOAD_UOPS_RETIRED:L2_HIT', '*',
+                'CPU_CLK_UNHALTED', '/'],
+    'L3_COST': [26., 'MEM_LOAD_UOPS_RETIRED:L3_HIT', '*',
+                'CPU_CLK_UNHALTED', '/'],
+    'MEMORY_COST': [200., 'MEM_LOAD_UOPS_LLC_HIT_RETIRED:XNSP_HIT', '*',
+                    'CPU_CLK_UNHALTED', '/'],
     'L1_BOUND': ['CYCLE_ACTIVITY:STALLS_LDM_PENDING',
                  'CYCLE_ACTIVITY:STALLS_L1D_PENDING', '-',
                  'CPU_CLK_UNHALTED', '/'],
@@ -43,7 +49,7 @@ preset_metrics = {
                         '/'],
     # MEM_L3_WEIGHT: External memory to L3 cache latency ratio, 7 can be used
     # for 3rd generation intel
-    'MEM_L3_WEIGHT': [7],
+    'MEM_L3_WEIGHT': [7.],
     'L3_MISS_FRACTION': ['MEM_LOAD_UOPS_RETIRED:L3_MISS',
                          'MEM_LOAD_UOPS_RETIRED:L3_MISS',
                          'MEM_LOAD_UOPS_RETIRED:L3_HIT',
@@ -57,7 +63,7 @@ preset_metrics = {
     'RESOURCE_STALLS_COST': ['RESOURCE_STALLS:ALL', 'CPU_CLK_UNHALTED', '/'],
     'LOCK_CONTENTION': ['MEM_LOAD_UOPS_L3_HIT_RETIRED:XSNP_HITM',
                         'MEM_UOPS_RETIRED:LOCK_LOADS', '/'],
-    'BR_MISP_COST': [20, 'BR_MISP_RETIRED:ALL_BRANCES', '*',
+    'BR_MISP_COST': [20., 'BR_MISP_RETIRED:ALL_BRANCES', '*',
                      'CPU_CLK_UNHALTED', '/']
 
 }
@@ -114,22 +120,34 @@ class PAPIProf(object):
     def clear_counters(self):
         pass
 
-    def add_metrics(self, metrics):
-        self.metrics = np.unique(self.metrics + metrics)
+    def add_metrics(self, metrics, helper=False):
+        new_metrics = list(set(metrics) - set(self.metrics))
+
+        # self.metrics = np.unique(self.metrics + metrics)
         events = []
-        for m in self.metrics:
+        for m in new_metrics:
             equation = preset_metrics[m]
             for symbol in equation:
-                if isinstance(symbol, str) and (symbol not in preset_metrics) \
-                        and (symbol not in ['/', '+', '-', '*']):
+                if symbol in preset_metrics:
+                    self.add_metrics([symbol], helper=True)
+                elif isinstance(symbol, str) and \
+                        (symbol not in ['/', '+', '-', '*']):
                     events.append(symbol)
+
+        if not helper:
+            self.metrics = self.metrics + new_metrics
 
         events = list(set(events) - set(self.events))
         if len(events):
             self.events += events
             self.papi_add_events(self.eventSet, events)
 
-    def decorate(self, filename='', classname=''):
+    def decorate(self, filename='', classname='', metrics=[], events=[]):
+        if len(metrics):
+            self.add_metrics(metrics)
+        if len(events):
+            self.add_events(events)
+
         def decorator(func):
             @wraps(func)
             def wrapper(*args, **kw):
@@ -179,6 +197,7 @@ class PAPIProf(object):
             # for symbol in equation:
             while len(equation) != 0:
                 # print(equation)
+                # print(stack)
                 symbol = equation.pop(0)
                 if isinstance(symbol, float):
                     stack.append(float(symbol))
