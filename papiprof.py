@@ -221,12 +221,13 @@ class PAPIProf(object):
         string = '\n' + ''.join(['=']*80) + \
             '\n Metrics Report Start\n' + ''.join(['=']*80)
         print(string)
-        print('function\tmetric\taverage_value')
+        print('function\tmetric\taverage_value\tstd(%)\tcalls')
         for func, counters in sorted(self.counters.items()):
             for metric_name in sorted(self.metrics):
                 equation = preset_metrics[metric_name]
                 result = calculate(equation.copy(), counters)
-                print('%s\t%s\t%.3f' % (func, metric_name, result))
+                print('%s\t%s\t%.3f\t%s\t%s' %
+                      (func, metric_name, result, 'na', 'na'))
         string = ''.join(['=']*80) + \
             '\n Metrics  Report End\n' + ''.join(['=']*80)
         print(string+'\n')
@@ -239,16 +240,31 @@ class PAPIProf(object):
         for func, counters in sorted(self.counters.items()):
             for counter, v in counters.items():
                 if 'time' in str(counter):
+                    continue
+                format_str = '%s\t%s\t%d\t%.2f\t%d'
+                format_values = (func, counter, np.sum(v),
+                                 100. * len(v) * np.std(v) / np.sum(v), len(v))
+                print(format_str % format_values)
+
+        string = ''.join(['=']*80) + \
+            '\n Counters Report End\n' + ''.join(['=']*80)
+        print(string+'\n')
+
+    def report_timing(self):
+        string = '\n' + ''.join(['=']*80) + \
+            '\n Timing Report Start\n' + ''.join(['=']*80)
+        print(string)
+        print('function\tcounter\taverage_value\tstd(%)\tcalls')
+        for func, counters in sorted(self.counters.items()):
+            for counter, v in counters.items():
+                if 'time' in str(counter):
                     format_str = '%s\t%s\t%.3f\t%.2f\t%d'
                     format_values = (func, counter, np.mean(v),
                                      100.0*np.std(v)/np.mean(v), len(v))
-                else:
-                    format_str = '%s\t%s\t%d\t%.2f\t%d'
-                    format_values = (func, counter, np.sum(v), 0, len(v))
+                    print(format_str % format_values)
 
-                print(format_str % format_values)
         string = ''.join(['=']*80) + \
-            '\n Counters Report End\n' + ''.join(['=']*80)
+            '\n Timing Report End\n' + ''.join(['=']*80)
         print(string+'\n')
 
     def papi_init(self, eventSet):
