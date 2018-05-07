@@ -6,7 +6,7 @@ except ImportError:
     # from time import clock as timer
 import inspect
 import numpy as np
-
+import sys
 
 times = {}
 start_time_stack = []
