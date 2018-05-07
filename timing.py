@@ -3,6 +3,7 @@ try:
     from time import perf_counter as timer
 except ImportError:
     from time import time as timer
+    # from time import clock as timer
 import inspect
 import numpy as np
 
@@ -76,13 +77,13 @@ def timeit(filename='', classname='', key='', exclude=False):
 class timed_region:
 
     def __init__(self, region_name='', is_child_function=False):
-
-        ls = timer()
-        global times, excluded, mode
+        global mode
 
         if mode == 'disabled':
             return
         elif mode == 'timing':
+            ls = timer()
+            global times, excluded
             if region_name:
                 self.key = region_name
             else:
@@ -104,12 +105,13 @@ class timed_region:
                 '[timing:timed_region] mode: %s not available' % mode)
 
     def __enter__(self):
-        ls = timer()
-        global times, excluded, mode
+        global mode
 
         if mode == 'disabled':
             return self
         elif mode == 'timing':
+            ls = timer()
+            global times, excluded
 
             times['lib_time'].append((timer() - ls) * 1000)
 
@@ -121,12 +123,13 @@ class timed_region:
                 '[timing:timed_region] mode: %s not available' % mode)
 
     def __exit__(self, type, value, traceback):
-        te = timer()
-        global times, excluded, mode
+        global mode
 
         if mode == 'disabled':
             return
         elif mode == 'timing':
+            te = timer()
+            global times, excluded
             times[self.key].append((te - self.ts) * 1000)
 
             times['lib_time'].append((timer() - te) * 1000)
@@ -180,29 +183,33 @@ def stop_timing(exclude=False):
             '[timing:timed_region] mode: %s not available' % mode)
 
 
-def report(skip=0, total_time=None):
+def report(skip=0, total_time=None, out_file=None):
     global times, excluded, mode
 
     if mode == 'disabled':
         return
     elif mode == 'timing':
+        if out_file:
+            out = open(out_file, 'w')
+        else:
+            out = sys.stdout
 
         if isinstance(total_time, str):
             _total_time = sum(times[total_time][skip:])
             excluded.append(total_time)
+            _total_time -= sum(times['lib_time'])
         elif isinstance(total_time, float):
             _total_time = total_time
+            _total_time -= sum(times['lib_time'])
         else:
             _total_time = sum(sum(x[skip:])
                               for k, x in times.items() if k not in excluded)
 
-        _total_time -= sum(times['lib_time'])
-
         otherPercent = 100.0
         otherTime = _total_time
 
-        print(
-            'function\ttotal_time(sec)\ttime_per_call(ms)\tstd(%)\tcalls\tglobal_percentage')
+        out.write(
+            'function\ttotal_time(sec)\ttime_per_call(ms)\tstd(%)\tcalls\tglobal_percentage\n')
         for k, v in sorted(times.items()):
 
             if k == 'lib_time':
@@ -217,12 +224,15 @@ def report(skip=0, total_time=None):
                 otherPercent -= vGPercent
                 otherTime -= vSum
 
-            print('%s\t%.3lf\t%.3lf\t%.2lf\t%d\t%.2lf'
+            out.write('%s\t%.3lf\t%.3lf\t%.2lf\t%d\t%.2lf\n'
                   % (k, vSum/1000., vMean, 100.0 * vStd / vMean,
                      len(v), vGPercent))
 
-        print('%s\t%.3lf\t%.3lf\t%.2lf\t%d\t%.2lf'
+        out.write('%s\t%.3lf\t%.3lf\t%.2lf\t%d\t%.2lf\n'
               % ('Other', otherTime/1000., otherTime, 0.0, 1, otherPercent))
+
+        out.write('total_time %.3lf sec\n' % (_total_time/1000))
+
     elif mode == 'line_profiler':
         lp.print_stats()
     else:
