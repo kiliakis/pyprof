@@ -231,8 +231,9 @@ def report(skip=0, total_time=None, out_file=None):
         out.write('%s\t%.3lf\t%.3lf\t%.2lf\t%d\t%.2lf\n'
               % ('Other', otherTime/1000., otherTime, 0.0, 1, otherPercent))
 
-        out.write('total_time %.3lf sec\n' % (_total_time/1000))
-
+        out.write('%s\t%.3lf\t%.3lf\t%.2lf\t%d\t%.2lf\n'
+              % ('total_time', (_total_time/1e3), _total_time, 0.0, 1, 100))
+        out.close()
     elif mode == 'line_profiler':
         lp.print_stats()
     else:
