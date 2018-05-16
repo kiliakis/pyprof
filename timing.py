@@ -7,6 +7,7 @@ except ImportError:
 import inspect
 import numpy as np
 import sys
+import os
 
 times = {}
 start_time_stack = []
@@ -183,14 +184,17 @@ def stop_timing(exclude=False):
             '[timing:timed_region] mode: %s not available' % mode)
 
 
-def report(skip=0, total_time=None, out_file=None):
+def report(skip=0, total_time=None, out_file=None, out_dir='./'):
     global times, excluded, mode
 
     if mode == 'disabled':
         return
     elif mode == 'timing':
         if out_file:
-            out = open(out_file, 'w')
+            # parent_dir = os.path.dirname(out_dir+'/'+out_file)
+            # if not os.path.exists(parent_dir):
+            #     os.mkdir(parent_dir)
+            out = open(out_dir+'/'+out_file, 'w')
         else:
             out = sys.stdout
 
@@ -225,14 +229,14 @@ def report(skip=0, total_time=None, out_file=None):
                 otherTime -= vSum
 
             out.write('%s\t%.3lf\t%.3lf\t%.2lf\t%d\t%.2lf\n'
-                  % (k, vSum/1000., vMean, 100.0 * vStd / vMean,
-                     len(v), vGPercent))
+                      % (k, vSum/1000., vMean, 100.0 * vStd / vMean,
+                         len(v), vGPercent))
 
         out.write('%s\t%.3lf\t%.3lf\t%.2lf\t%d\t%.2lf\n'
-              % ('Other', otherTime/1000., otherTime, 0.0, 1, otherPercent))
+                  % ('Other', otherTime/1000., otherTime, 0.0, 1, otherPercent))
 
         out.write('%s\t%.3lf\t%.3lf\t%.2lf\t%d\t%.2lf\n'
-              % ('total_time', (_total_time/1e3), _total_time, 0.0, 1, 100))
+                  % ('total_time', (_total_time/1e3), _total_time, 0.0, 1, 100))
         out.close()
     elif mode == 'line_profiler':
         lp.print_stats()
