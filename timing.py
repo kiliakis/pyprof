@@ -13,12 +13,20 @@ times = {}
 start_time_stack = []
 func_stack = []
 excluded = ['lib_time']
-mode = 'timing'
+mode = 'disabled'
 lp = None
 # Modes available:
 # 'line_profiler'
 # 'disabled'
 # 'timing'
+
+def init(*args, **kw):
+    return
+
+def finalize(*args, **kw):
+    return
+
+
 
 
 def timeit(filename='', classname='', key='', exclude=False):
@@ -191,10 +199,9 @@ def report(skip=0, total_time=None, out_file=None, out_dir='./'):
         return
     elif mode == 'timing':
         if out_file:
-            # parent_dir = os.path.dirname(out_dir+'/'+out_file)
-            # if not os.path.exists(parent_dir):
-            #     os.mkdir(parent_dir)
-            out = open(out_dir+'/'+out_file, 'w')
+            if not os.path.exists(out_dir):
+                os.makedirs(out_dir)
+            out = open(os.path.join(out_dir, out_file), 'w')
         else:
             out = sys.stdout
 
@@ -250,5 +257,5 @@ def reset():
     start_time_stack = []
     func_stack = []
     excluded = ['lib_time']
-    mode = 'timing'
+    # mode = 'timing'
     lp = None
