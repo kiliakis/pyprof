@@ -260,12 +260,12 @@ def reset():
     # mode = 'timing'
     lp = None
 
-def get(lst):
+def get(lst, exclude_lst=[]):
     global times, mode, excluded
     total = 0
     if mode != 'disabled':
         for k,v in times.items():
-            if k in excluded:
+            if (k in excluded) or (k in exclude_lst):
                 continue
             if np.any([l in k for l in lst]):
                 total += np.sum(v)
