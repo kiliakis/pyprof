@@ -15,6 +15,8 @@ preset_metrics = {
     'CPI': ['CPU_CLK_UNHALTED', 'INSTRUCTIONS_RETIRED', '/'],
     'L2_MISS_RATE': ['PAPI_L2_TCM', 'PAPI_L2_TCA', '/', 100., '*'],
     'L3_MISS_RATE': ['PAPI_L3_TCM', 'PAPI_L3_TCA', '/', 100., '*'],
+    'LLC_MISS_RATE': ['perf::CACHE-MISSES', 'perf::CACHE-REFERENCES', '/', 100., '*'],
+    'BRANCH_MISS_RATE': ['perf::BRANCH-MISSES', 'perf::BRANCHES', '/', 100., '*'],
     'FRONT_BOUND%': ['IDQ_UOPS_NOT_DELIVERED:CORE',
                      4., 'CPU_CLK_UNHALTED', '*', '/', 100., '*'],
     'BAD_SPECULATION%': ['UOPS_ISSUED:ANY', 'UOPS_RETIRED:RETIRE_SLOTS', '-',
