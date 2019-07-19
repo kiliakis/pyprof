@@ -244,7 +244,8 @@ def report(skip=0, total_time=None, out_file=None, out_dir='./'):
 
         out.write('%s\t%.3lf\t%.3lf\t%.2lf\t%d\t%.2lf\n'
                   % ('total_time', (_total_time/1e3), _total_time, 0.0, 1, 100))
-        out.close()
+        if out_file:
+            out.close()
     elif mode == 'line_profiler':
         lp.print_stats()
     else:

@@ -9,9 +9,12 @@ import inspect
 libpapi = ct.CDLL(os.path.dirname(__file__) + '/src/libpapi.so')
 
 
+# Metrics as postfix expressions
 preset_metrics = {
     'IPC': ['INSTRUCTIONS_RETIRED', 'CPU_CLK_UNHALTED', '/'],
     'CPI': ['CPU_CLK_UNHALTED', 'INSTRUCTIONS_RETIRED', '/'],
+    'L2_MISS_RATE': ['PAPI_L2_TCM', 'PAPI_L2_TCA', '/', 100., '*'],
+    'L3_MISS_RATE': ['PAPI_L3_TCM', 'PAPI_L3_TCA', '/', 100., '*'],
     'FRONT_BOUND%': ['IDQ_UOPS_NOT_DELIVERED:CORE',
                      4., 'CPU_CLK_UNHALTED', '*', '/', 100., '*'],
     'BAD_SPECULATION%': ['UOPS_ISSUED:ANY', 'UOPS_RETIRED:RETIRE_SLOTS', '-',
@@ -90,6 +93,38 @@ class PAPIProf(object):
         new_events = list(set(event_list) - set(self.events))
         self.papi_add_events(self.eventSet, new_events)
         self.events += new_events
+
+    def list_events(self):
+        string = '\n' + ''.join(['=']*80) + \
+            '\n List of Tracked Events\n' + ''.join(['=']*80)
+        for e in self.events:
+            string += '\n' + e
+            
+        string += '\n' +''.join(['=']*80) + \
+            '\n End\n' + ''.join(['=']*80)
+        print(string)
+
+
+    def list_metrics(self):
+        string = '\n' + ''.join(['=']*80) + \
+            '\n List of Tracked Metrics\n' + ''.join(['=']*80)
+        for e in self.metrics:
+            string += '\n' + e
+
+        string += '\n' + ''.join(['=']*80) + \
+            '\n End\n' + ''.join(['=']*80)
+        print(string)
+    
+
+    def list_avail_metrics(self):
+        string = '\n' + ''.join(['=']*80) + \
+            '\n List of Available Metrics\n' + ''.join(['=']*80)
+        for e in preset_metrics.keys():
+            string += '\n' + e 
+        string += '\n' + ''.join(['=']*80) + \
+            '\n End\n' + ''.join(['=']*80)
+        print(string)
+
 
     def start_counters(self):
         self.ts = time.time()
@@ -219,7 +254,7 @@ class PAPIProf(object):
             return stack.pop()
 
         string = '\n' + ''.join(['=']*80) + \
-            '\n Metrics Report Start\n' + ''.join(['=']*80)
+            '\n Metrics Report Begin\n' + ''.join(['=']*80)
         print(string)
         print('function\tmetric\taverage_value\tstd(%)\tcalls')
         for func, counters in sorted(self.counters.items()):
@@ -234,7 +269,7 @@ class PAPIProf(object):
 
     def report_counters(self):
         string = '\n' + ''.join(['=']*80) + \
-            '\n Counters Report Start\n' + ''.join(['=']*80)
+            '\n Counters Report Begin\n' + ''.join(['=']*80)
         print(string)
         print('function\tcounter\taverage_value\tstd(%)\tcalls')
         for func, counters in sorted(self.counters.items()):
@@ -252,7 +287,7 @@ class PAPIProf(object):
 
     def report_timing(self):
         string = '\n' + ''.join(['=']*80) + \
-            '\n Timing Report Start\n' + ''.join(['=']*80)
+            '\n Timing Report Begin\n' + ''.join(['=']*80)
         print(string)
         print('function\tcounter\taverage_value\tstd(%)\tcalls')
         for func, counters in sorted(self.counters.items()):
