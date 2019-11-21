@@ -1,18 +1,19 @@
 CC=g++
 CFLAGS=-O3 -Wall
-LDFLAGS=-L/afs/cern.ch/work/k/kiliakis/install/lib -lpapi
+LDFLAGS=-L/home/kiliakis/install/lib
 SOURCES=main.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
-EXECUTABLE=main
-LIB=libpapi.so
+EXECUTABLE=exe/main
+LIB=lib/libmypapi.so
 
-all: $(SOURCES) $(EXECUTABLE) $(LIB)
+all: $(LIB) $(SOURCES) $(EXECUTABLE)
 
-$(EXECUTABLE): $(OBJECTS) 
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+$(EXECUTABLE): $(OBJECTS)
+	$(CC) $(LDFLAGS) -Llib -lmypapi $(OBJECTS) -o $@ -lpapi
 
 $(LIB): libpapi.cpp
-	$(CC) $(LDFLAGS) $(CFLAGS) -shared -fPIC $< -o $@
+	mkdir -p lib
+	$(CC) $(LDFLAGS) $(CFLAGS) -shared -fPIC $< -o $@ -lpapi
 
 .cpp.o:
 	$(CC) -c $(CFLAGS) $< -o $@

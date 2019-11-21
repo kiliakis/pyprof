@@ -57,6 +57,15 @@ if __name__ == "__main__":
                 result = A[s:e] + B[s:e]
         papiprof.stop_counters()
 
+    with timing.timed_region('vector_add') as tr:
+        papiprof.start_counters()
+        # for s in range(0, size, block):
+            # e = min(s+block, size)
+        for i in range(n_turns):
+            result = A + B
+        papiprof.stop_counters()
+
+
     timing.report()
     papiprof.report_counters()
     papiprof.report_metrics()

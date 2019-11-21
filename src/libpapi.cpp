@@ -1,4 +1,4 @@
-#include <papi.h>
+#include "papi.h"
 #include <stdio.h>
 #include <stdlib.h>
 

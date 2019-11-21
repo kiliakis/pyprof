@@ -6,7 +6,7 @@ import os
 import inspect
 
 
-libpapi = ct.CDLL(os.path.dirname(__file__) + '/src/libpapi.so')
+libpapi = ct.CDLL(os.path.dirname(__file__) + '/src/lib/libmypapi.so')
 
 
 # Metrics as postfix expressions
@@ -16,7 +16,8 @@ preset_metrics = {
     'L2_MISS_RATE': ['PAPI_L2_TCM', 'PAPI_L2_TCA', '/', 100., '*'],
     'L3_MISS_RATE': ['PAPI_L3_TCM', 'PAPI_L3_TCA', '/', 100., '*'],
     'LLC_MISS_RATE': ['perf::CACHE-MISSES', 'perf::CACHE-REFERENCES', '/', 100., '*'],
-    'BRANCH_MISS_RATE': ['perf::BRANCH-MISSES', 'perf::BRANCHES', '/', 100., '*'],
+    # 'BRANCH_MISS_RATE': ['perf::BRANCH-MISSES', 'perf::BRANCHES', '/', 100., '*'],
+    'BRANCH_MSP_RATE': ['PAPI_BR_MSP', 'PAPI_BR_CN', '/', 100., '*'],
     'FRONT_BOUND%': ['IDQ_UOPS_NOT_DELIVERED:CORE',
                      4., 'CPU_CLK_UNHALTED', '*', '/', 100., '*'],
     'BAD_SPECULATION%': ['UOPS_ISSUED:ANY', 'UOPS_RETIRED:RETIRE_SLOTS', '-',
