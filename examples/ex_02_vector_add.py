@@ -43,9 +43,9 @@ if __name__ == "__main__":
 
     papiprof = PAPIProf(metrics=['IPC', 'L2_MISS_RATE', 'L3_MISS_RATE', 'LLC_MISS_RATE',
                                  'BRANCH_MISS_RATE'])
-    papiprof.list_events()
-    papiprof.list_metrics()
-    papiprof.list_avail_metrics()
+    # papiprof.list_events()
+    # papiprof.list_metrics()
+    # papiprof.list_avail_metrics()
 
     with timing.timed_region('vector_add') as tr:
         papiprof.start_counters()
@@ -53,6 +53,6 @@ if __name__ == "__main__":
             result = A + B
         papiprof.stop_counters()
 
-    timing.report()
-    papiprof.report_counters()
+    # timing.report()
+    # papiprof.report_counters()
     papiprof.report_metrics()
