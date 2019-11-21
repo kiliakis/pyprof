@@ -46,5 +46,57 @@ total_time  0.001           1.132               0.00    1       100.00
 ```
 
 
+## Documentation and Usage Examples: timing.py
+
+* Required packages: papi-tools
+* try `papi_avail` for a list of all available events
+* If none is available, try this fix: https://stackoverflow.com/questions/32308175/papi-avail-no-events-available
+
+```python
+import sys
+import numpy as np
+from pyprof.papiprof import PAPIProf
+import random
+
+n_turns = 5
+size = 10 * 1024**2
+
+A = np.random.randn(size)
+print('Array A size: {:.0f} Mb'.format(sys.getsizeof(A)/ (1024**2)))
+
+papiprof = PAPIProf(metrics=['IPC', 'L2_MISS_RATE', 'L3_MISS_RATE', 'BRANCH_MSP_RATE'])
+
+papiprof.list_metrics()
+papiprof.list_avail_metrics()
+
+idx = np.arange(size)
+for r in range(n_turns):
+    print('seq_access: step {}/{}'.format(r, n_turns))
+    result = 0.
+    papiprof.start_counters()
+    for i in idx:
+        if i % 3 == 0:
+            result += A[i]
+    papiprof.stop_counters()
+
+
+idx = np.arange(size)
+random.shuffle(idx)
+papiprof.start_counters()
+for r in range(n_turns):
+    print('random_access: step {}/{}'.format(r, n_turns))
+    result = 0.        
+    for i in idx:
+        if i % 3 == 0:
+            result += A[i]
+papiprof.stop_counters()
+
+papiprof.report_timing()
+papiprof.report_metrics()
+
+
+```
+
+
 ## Dependencies
 pypapi and papi

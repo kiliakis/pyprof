@@ -51,15 +51,14 @@ if __name__ == "__main__":
 
 
     idx = np.arange(size)
-    papiprof.start_counters()
     for r in range(n_turns):
         print('seq_access: step {}/{}'.format(r, n_turns))
         result = 0.
-        # with timing.timed_region('seq_access') as tr:
+        papiprof.start_counters()
         for i in idx:
             if i % 3 == 0:
                 result += A[i]
-    papiprof.stop_counters()
+        papiprof.stop_counters()
 
 
     idx = np.arange(size)
@@ -68,24 +67,10 @@ if __name__ == "__main__":
     for r in range(n_turns):
         print('random_access: step {}/{}'.format(r, n_turns))
         result = 0.        
-        # with timing.timed_region('random_access') as tr:
         for i in idx:
             if i % 3 == 0:
                 result += A[i]
     papiprof.stop_counters()
 
-
-    # with timing.timed_region('tiled_access') as tr:
-    #     papiprof.start_counters()
-    #     for s in range(0, size, block):
-    #         e = min(s+block, size)
-    #         for i in range(n_turns):
-    #             result = A[s:e] + B[s:e]
-    #     papiprof.stop_counters()
-
-
-
-    # timing.report()
     papiprof.report_timing()
-    # papiprof.report_counters()
     papiprof.report_metrics()
