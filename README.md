@@ -46,7 +46,7 @@ total_time  0.001           1.132               0.00    1       100.00
 ```
 
 
-## Documentation and Usage Examples: timing.py
+## Documentation and Usage Examples: papiprof.py
 
 * Required packages: papi-tools
 * try `papi_avail` for a list of all available events
@@ -97,6 +97,13 @@ papiprof.report_metrics()
 
 ```
 
+## Documentation and Usage Examples: perfdeluxe
+
+* Requires: linux-perf (linux-tools-common)
+* Make it executable: `chmod +x perfdeluxe`
+* Run as: `./perfdeluxe ls -la /usr/bin`
+
+
 
 ## Dependencies
-pypapi and papi
+papi, linux-perf
