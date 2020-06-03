@@ -8,6 +8,7 @@ import inspect
 import numpy as np
 import sys
 import os
+import pickle
 
 times = {}
 start_time_stack = []
@@ -20,13 +21,13 @@ lp = None
 # 'disabled'
 # 'timing'
 
+
 def init(*args, **kw):
     return
 
+
 def finalize(*args, **kw):
     return
-
-
 
 
 def timeit(filename='', classname='', key='', exclude=False):
@@ -192,7 +193,8 @@ def stop_timing(exclude=False):
             '[timing:timed_region] mode: %s not available' % mode)
 
 
-def report(skip=0, total_time=None, out_file=None, out_dir='./'):
+def report(skip=0, total_time=None, out_file=None, out_dir='./',
+           save_pickle=False):
     global times, excluded, mode
 
     if mode == 'disabled':
@@ -200,7 +202,7 @@ def report(skip=0, total_time=None, out_file=None, out_dir='./'):
     elif mode == 'timing':
         if out_file:
             if not os.path.exists(out_dir):
-                os.makedirs(out_dir)
+                os.makedirs(out_dir, exist_ok=True)
             out = open(os.path.join(out_dir, out_file), 'w')
         else:
             out = sys.stdout
@@ -244,6 +246,14 @@ def report(skip=0, total_time=None, out_file=None, out_dir='./'):
 
         out.write('%s\t%.3lf\t%.3lf\t%.2lf\t%d\t%.2lf\n'
                   % ('total_time', (_total_time/1e3), _total_time, 0.0, 1, 100))
+        if save_pickle and out_file:
+            times['total_time'] = _total_time
+            times['Other'] = otherTime
+            out_file = os.path.splitext(out_file)[0] + '.p'
+            with open(os.path.join(out_dir, out_file), 'wb') as picklefile:
+                pickle.dump(times, picklefile)
+
+
         if out_file:
             out.close()
     elif mode == 'line_profiler':
@@ -261,11 +271,12 @@ def reset():
     # mode = 'timing'
     lp = None
 
+
 def get(lst, exclude_lst=[]):
     global times, mode, excluded
     total = 0
     if mode != 'disabled':
-        for k,v in times.items():
+        for k, v in times.items():
             if (k in excluded) or (k in exclude_lst):
                 continue
             if np.any([l in k for l in lst]):
