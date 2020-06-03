@@ -101,8 +101,18 @@ papiprof.report_metrics()
 
 * Requires: linux-perf (linux-tools-common)
 * Make it executable: `chmod +x perfdeluxe`
-* Run as: `./perfdeluxe ls -la /usr/bin`
+* Run as: `./perfdeluxe echo "Hello World"`
+* Example output:
 
+Performance counter stats for 'echo Hello World' (5 runs):
+
+           374,575      cycles:u                  #    0.628 GHz                      ( +-  4.23% )
+           205,397      instructions:u            #    0.55  insn per cycle           ( +-  0.00% )
+              0.60 msec task-clock:u              #    0.468 CPUs utilized            ( +-  3.02% )
+            15,735      cache-references:u        #   26.368 M/sec                    ( +-  1.23% )
+             1,886      cache-misses:u            #   11.988 % of all cache refs      ( +- 67.30% )
+
+          0.001275 +- 0.000181 seconds time elapsed  ( +- 14.23% )
 
 
 ## Dependencies
