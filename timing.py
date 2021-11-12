@@ -127,7 +127,7 @@ class timed_region:
 
             if 'lib_time' not in times:
                 times['lib_time'] = []
-            times['lib_time'].append((timer() - ls) * 1000)
+            # times['lib_time'].append((timer() - ls) * 1000)
         else:
             raise RuntimeError(
                 '[timing:timed_region] mode: %s not available' % mode)
@@ -141,7 +141,7 @@ class timed_region:
             ls = timer()
             global times, excluded
 
-            times['lib_time'].append((timer() - ls) * 1000)
+            # times['lib_time'].append((timer() - ls) * 1000)
 
             self.ts = timer()
             if self.cupy:
@@ -169,7 +169,7 @@ class timed_region:
                 elapsed_time = (te-self.ts)*1000
             times[self.key].append(elapsed_time)
 
-            times['lib_time'].append((timer() - te) * 1000)
+            # times['lib_time'].append((timer() - te) * 1000)
             return
         else:
             raise RuntimeError(
