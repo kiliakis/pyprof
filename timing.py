@@ -161,6 +161,7 @@ class timed_region:
             te = timer()
             global times, excluded
             if self.cupy:
+                import cupy
                 self.end_gpu.record()
                 self.end_gpu.synchronize()
                 elapsed_time = cupy.cuda.get_elapsed_time(self.start_gpu, self.end_gpu)
