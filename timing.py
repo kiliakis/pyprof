@@ -100,17 +100,17 @@ class timed_region:
 
     def __init__(self, region_name='', is_child_function=False, cupy=False):
         global mode
-        if cupy:
-            import cupy
-            self.start_gpu = cupy.cuda.Event()
-            self.end_gpu = cupy.cuda.Event()
-            self.cupy = True
-        else:
-            self.cupy = False
         if mode == 'disabled':
             return
         elif mode == 'timing':
             ls = timer()
+            if cupy:
+                import cupy
+                self.start_gpu = cupy.cuda.Event()
+                self.end_gpu = cupy.cuda.Event()
+                self.cupy = True
+            else:
+                self.cupy = False
             global times, excluded
             if region_name:
                 self.key = region_name
