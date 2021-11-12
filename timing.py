@@ -30,8 +30,12 @@ def finalize(*args, **kw):
     return
 
 
-def timeit(filename='', classname='', key='', exclude=False):
+def timeit(filename='', classname='', key='', exclude=False, cupy=False):
     global times, excluded, disabled, mode
+    if cupy:
+        import cupy
+        start_gpu = cupy.cuda.Event()
+        end_gpu = cupy.cuda.Event()
 
     def decorator(f):
         @wraps(f)
@@ -40,7 +44,13 @@ def timeit(filename='', classname='', key='', exclude=False):
                 return f(*args, **kw)
             elif mode == 'timing':
                 ts = timer()
+                if cupy:
+                    start_gpu.record()
                 result = f(*args, **kw)
+                if cupy:
+                    end_gpu.record()
+                    end_gpu.synchronize()
+
                 te = timer()
 
                 if key == '':
@@ -58,9 +68,11 @@ def timeit(filename='', classname='', key='', exclude=False):
                     times[_key] = []
                     if exclude:
                         excluded.append(_key)
-
-                times[_key].append((te - ts) * 1000)
-
+                if cupy:
+                    elapsed_time = cupy.cuda.get_elapsed_time(start_gpu, end_gpu)
+                else:
+                    elapsed_time = (te-ts) * 1000
+                times[_key].append(elapsed_time)
                 if 'lib_time' not in times:
                     times['lib_time'] = []
                 times['lib_time'].append((timer() - te) * 1000)
@@ -86,9 +98,15 @@ def timeit(filename='', classname='', key='', exclude=False):
 
 class timed_region:
 
-    def __init__(self, region_name='', is_child_function=False):
+    def __init__(self, region_name='', is_child_function=False, cupy=False):
         global mode
-
+        if cupy:
+            import cupy
+            self.start_gpu = cupy.cuda.Event()
+            self.end_gpu = cupy.cuda.Event()
+            self.cupy = True
+        else:
+            self.cupy = False
         if mode == 'disabled':
             return
         elif mode == 'timing':
@@ -126,6 +144,8 @@ class timed_region:
             times['lib_time'].append((timer() - ls) * 1000)
 
             self.ts = timer()
+            if self.cupy:
+                self.start_gpu.record()
 
             return self
         else:
@@ -140,7 +160,13 @@ class timed_region:
         elif mode == 'timing':
             te = timer()
             global times, excluded
-            times[self.key].append((te - self.ts) * 1000)
+            if self.cupy:
+                self.end_gpu.record()
+                self.end_gpu.synchronize()
+                elapsed_time = cupy.cuda.get_elapsed_time(self.start_gpu, self.end_gpu)
+            else:
+                elapsed_time = (te-self.ts)*1000
+            times[self.key].append(elapsed_time)
 
             times['lib_time'].append((timer() - te) * 1000)
             return
