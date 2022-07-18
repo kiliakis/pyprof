@@ -14,12 +14,14 @@ times = {}
 start_time_stack = []
 func_stack = []
 excluded = ['lib_time']
-mode = 'disabled'
+mode = 'timing'
+
 lp = None
 # Modes available:
 # 'line_profiler'
 # 'disabled'
 # 'timing'
+# 'cupy'
 
 
 def init(*args, **kw):
@@ -30,10 +32,11 @@ def finalize(*args, **kw):
     return
 
 
-def timeit(filename='', classname='', key='', exclude=False, cupy=False):
+def timeit(filename='', classname='', key='', exclude=False):
     global times, excluded, disabled, mode
-    if cupy:
+    if mode == 'cupy':
         import cupy
+        has_cupy = True
         start_gpu = cupy.cuda.Event()
         end_gpu = cupy.cuda.Event()
 
@@ -42,12 +45,12 @@ def timeit(filename='', classname='', key='', exclude=False, cupy=False):
         def timed(*args, **kw):
             if mode == 'disabled':
                 return f(*args, **kw)
-            elif mode == 'timing':
+            elif mode in ['timing', 'cupy']:
                 ts = timer()
-                if cupy:
+                if has_cupy:
                     start_gpu.record()
                 result = f(*args, **kw)
-                if cupy:
+                if has_cupy:
                     end_gpu.record()
                     end_gpu.synchronize()
 
@@ -68,7 +71,7 @@ def timeit(filename='', classname='', key='', exclude=False, cupy=False):
                     times[_key] = []
                     if exclude:
                         excluded.append(_key)
-                if cupy:
+                if has_cupy:
                     elapsed_time = cupy.cuda.get_elapsed_time(start_gpu, end_gpu)
                 else:
                     elapsed_time = (te-ts) * 1000
@@ -98,13 +101,13 @@ def timeit(filename='', classname='', key='', exclude=False, cupy=False):
 
 class timed_region:
 
-    def __init__(self, region_name='', is_child_function=False, cupy=False):
+    def __init__(self, region_name='', is_child_function=False):
         global mode
         if mode == 'disabled':
             return
-        elif mode == 'timing':
+        elif mode in ['timing', 'cupy']:
             ls = timer()
-            if cupy:
+            if mode == 'cupy':
                 import cupy
                 self.start_gpu = cupy.cuda.Event()
                 self.end_gpu = cupy.cuda.Event()
@@ -137,7 +140,7 @@ class timed_region:
 
         if mode == 'disabled':
             return self
-        elif mode == 'timing':
+        elif mode in ['timing', 'cupy']:
             ls = timer()
             global times, excluded
 
@@ -157,7 +160,7 @@ class timed_region:
 
         if mode == 'disabled':
             return
-        elif mode == 'timing':
+        elif mode in ['timing', 'cupy']:
             te = timer()
             global times, excluded
             if self.cupy:
@@ -180,7 +183,7 @@ def start_timing(funcname=''):
     global func_stack, start_time_stack, disabled, times, mode
     if mode == 'disabled':
         return
-    elif mode == 'timing':
+    elif mode in ['timing', 'cupy']:
         ts = timer()
         if funcname:
             key = funcname
@@ -202,7 +205,7 @@ def stop_timing(exclude=False):
     global times, start_time_stack, func_stack, excluded, mode
     if mode == 'disabled':
         return
-    elif mode == 'timing':
+    elif mode in ['timing', 'cupy']:
         ts = timer()
 
         elapsed = (timer() - start_time_stack.pop()) * 1000
@@ -226,7 +229,7 @@ def report(skip=0, total_time=None, out_file=None, out_dir='./',
 
     if mode == 'disabled':
         return
-    elif mode == 'timing':
+    elif mode in ['timing', 'cupy']:
         if out_file:
             if not os.path.exists(out_dir):
                 os.makedirs(out_dir, exist_ok=True)
