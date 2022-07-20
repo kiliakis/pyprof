@@ -34,6 +34,7 @@ def finalize(*args, **kw):
 
 def timeit(filename='', classname='', key='', exclude=False):
     global times, excluded, disabled, mode
+    has_cupy = False
     if mode == 'cupy':
         import cupy
         has_cupy = True
