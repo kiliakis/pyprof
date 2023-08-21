@@ -9,6 +9,7 @@ import numpy as np
 import sys
 import os
 import pickle
+from prettytable import PrettyTable
 
 times = {}
 start_time_stack = []
@@ -237,6 +238,20 @@ def report(skip=0, total_time=None, out_file=None, out_dir='./',
             out = open(os.path.join(out_dir, out_file), 'w')
         else:
             out = sys.stdout
+            table = PrettyTable()
+            field_names = ['function', 'total time (sec)', 'time per call (ms)', 'std (%)', 'calls', 'global_percentage']
+            table.field_names = field_names
+            formats = {
+                field_names[1]: lambda f, v: f"{v:.3f}",
+                field_names[2]: lambda f, v: f"{v:.3f}",
+                field_names[3]: lambda f, v: f"{v:.2f}",
+                field_names[5]: lambda f, v: f"{v:.2f}"
+            }
+
+            #formats = {field: lambda f, v: f"{v:{f}}" for field, fmt in zip(field_names, format_strings)}
+
+            table.custom_format = formats
+            table.align = "l"
 
         if isinstance(total_time, str):
             _total_time = sum(times[total_time][skip:])
@@ -252,8 +267,11 @@ def report(skip=0, total_time=None, out_file=None, out_dir='./',
         otherPercent = 100.0
         otherTime = _total_time
 
-        out.write(
-            'function\ttotal_time(sec)\ttime_per_call(ms)\tstd(%)\tcalls\tglobal_percentage\n')
+        if out != sys.stdout:
+            out.write(
+                'function\ttotal_time(sec)\ttime_per_call(ms)\tstd(%)\tcalls\tglobal_percentage\n')
+            
+
         for k, v in sorted(times.items()):
 
             if k == 'lib_time':
@@ -268,15 +286,25 @@ def report(skip=0, total_time=None, out_file=None, out_dir='./',
                 otherPercent -= vGPercent
                 otherTime -= vSum
 
+            if out != sys.stdout:
+                out.write('%s\t%.3lf\t%.3lf\t%.2lf\t%d\t%.2lf\n'
+                        % (k, vSum/1000., vMean, 100.0 * vStd / vMean,
+                            len(v), vGPercent))
+            else:
+                table.add_row([k, vSum/1000., vMean, 100.0 * vStd / vMean,
+                            len(v), vGPercent])
+
+        if out != sys.stdout:
             out.write('%s\t%.3lf\t%.3lf\t%.2lf\t%d\t%.2lf\n'
-                      % (k, vSum/1000., vMean, 100.0 * vStd / vMean,
-                         len(v), vGPercent))
+                    % ('Other', otherTime/1000., otherTime, 0.0, 1, otherPercent))
 
-        out.write('%s\t%.3lf\t%.3lf\t%.2lf\t%d\t%.2lf\n'
-                  % ('Other', otherTime/1000., otherTime, 0.0, 1, otherPercent))
-
-        out.write('%s\t%.3lf\t%.3lf\t%.2lf\t%d\t%.2lf\n'
-                  % ('total_time', (_total_time/1e3), _total_time, 0.0, 1, 100))
+            out.write('%s\t%.3lf\t%.3lf\t%.2lf\t%d\t%.2lf\n'
+                    % ('total_time', (_total_time/1e3), _total_time, 0.0, 1, 100))
+        else:
+            table.add_row(['Other', otherTime/1000., otherTime, 0.0, 1, otherPercent], divider=True)
+            table.add_row(['total_time', (_total_time/1e3), _total_time, 0.0, 1, 100])
+            out.write(table.get_string() + "\n")
+        
         if save_pickle and out_file:
             times['total_time'] = _total_time
             times['Other'] = otherTime
