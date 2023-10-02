@@ -241,6 +241,7 @@ def report(skip=0, total_time=None, out_file=None, out_dir='./',
             table = PrettyTable()
             field_names = ['function', 'total time (sec)', 'time per call (ms)', 'std (%)', 'calls', 'global_percentage']
             table.field_names = field_names
+            table.float_format = '.3'
             formats = {
                 field_names[1]: lambda f, v: f"{v:.3f}",
                 field_names[2]: lambda f, v: f"{v:.3f}",
@@ -301,7 +302,7 @@ def report(skip=0, total_time=None, out_file=None, out_dir='./',
             out.write('%s\t%.3lf\t%.3lf\t%.2lf\t%d\t%.2lf\n'
                     % ('total_time', (_total_time/1e3), _total_time, 0.0, 1, 100))
         else:
-            table.add_row(['Other', otherTime/1000., otherTime, 0.0, 1, otherPercent], divider=True)
+            table.add_row(['Other', otherTime/1000., otherTime, 0.0, 1, otherPercent])
             table.add_row(['total_time', (_total_time/1e3), _total_time, 0.0, 1, 100])
             out.write(table.get_string() + "\n")
         
