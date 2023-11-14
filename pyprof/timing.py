@@ -272,10 +272,10 @@ def report(skip=0, total_time=None, out_file=None, out_dir='./',
             if out != sys.stdout:
                 out.write('%s\t%.3lf\t%.3lf\t%.2lf\t%d\t%.2lf\n'
                         % (k, vSum/1000., vMean, 100.0 * vStd / vMean,
-                            len(v), vGPercent))
+                            len(v[skip:]), vGPercent))
             else:
                 table.add_row([k, vSum/1000., vMean, 100.0 * vStd / vMean,
-                            len(v), vGPercent])
+                            len(v[skip:]), vGPercent])
 
         if out != sys.stdout:
             out.write('%s\t%.3lf\t%.3lf\t%.2lf\t%d\t%.2lf\n'
