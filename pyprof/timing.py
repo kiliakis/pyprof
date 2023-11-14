@@ -1,9 +1,9 @@
 from functools import wraps
+from enum import Enum
 try:
     from time import perf_counter as timer
 except ImportError:
     from time import time as timer
-    # from time import clock as timer
 import inspect
 import numpy as np
 import sys
@@ -11,43 +11,39 @@ import os
 import pickle
 from prettytable import PrettyTable
 
+class Mode(Enum):
+    OFF = 0
+    ON = 1
+    CUPY = 2
+    LINEPROFILER = 3
+
+mode = Mode(Mode.ON)
+
 times = {}
 start_time_stack = []
 func_stack = []
 excluded = ['lib_time']
-mode = 'timing'
-
 lp = None
-# Modes available:
-# 'line_profiler'
-# 'disabled'
-# 'timing'
-# 'cupy'
 
 
-def init(*args, **kw):
-    return
-
-
-def finalize(*args, **kw):
-    return
-
-
-def timeit(filename='', classname='', key='', exclude=False):
+def timeit(key=None, exclude=False):
     global times, excluded, disabled, mode
     has_cupy = False
-    if mode == 'cupy':
+    if mode == Mode.CUPY:
         import cupy
         has_cupy = True
         start_gpu = cupy.cuda.Event()
         end_gpu = cupy.cuda.Event()
+    
+    if key is None:
+        key = f'func_{len(times)}'
 
     def decorator(f):
         @wraps(f)
         def timed(*args, **kw):
-            if mode == 'disabled':
+            if mode == Mode.OFF:
                 return f(*args, **kw)
-            elif mode in ['timing', 'cupy']:
+            elif mode in [Mode.ON, Mode.CUPY]:
                 ts = timer()
                 if has_cupy:
                     start_gpu.record()
@@ -55,35 +51,23 @@ def timeit(filename='', classname='', key='', exclude=False):
                 if has_cupy:
                     end_gpu.record()
                     end_gpu.synchronize()
-
                 te = timer()
 
-                if key == '':
-                    if not filename:
-                        _filename = inspect.stack()[1].filename.split('/')[-1]
-                    else:
-                        _filename = filename
-                    _key = _filename + '.' + f.__name__
-                    if classname:
-                        _key = classname + '.' + _key
-                else:
-                    _key = key
-                # key = filename
-                if(_key not in times):
-                    times[_key] = []
+                if(key not in times):
+                    times[key] = []
                     if exclude:
-                        excluded.append(_key)
+                        excluded.append(key)
                 if has_cupy:
                     elapsed_time = cupy.cuda.get_elapsed_time(start_gpu, end_gpu)
                 else:
                     elapsed_time = (te-ts) * 1000
-                times[_key].append(elapsed_time)
+                times[key].append(elapsed_time)
                 if 'lib_time' not in times:
                     times['lib_time'] = []
                 times['lib_time'].append((timer() - te) * 1000)
 
                 return result
-            elif mode == 'line_profiler':
+            elif mode == Mode.LINEPROFILER:
                 from line_profiler import LineProfiler
                 global lp
                 if not lp:
@@ -98,18 +82,16 @@ def timeit(filename='', classname='', key='', exclude=False):
     return decorator
 
 
-# timeit.times = {}
-
 
 class timed_region:
 
-    def __init__(self, region_name='', is_child_function=False):
+    def __init__(self, key=None, is_child_function=False):
         global mode
-        if mode == 'disabled':
+        if mode == Mode.OFF:
             return
-        elif mode in ['timing', 'cupy']:
+        elif mode in [Mode.ON, Mode.CUPY]:
             ls = timer()
-            if mode == 'cupy':
+            if mode == Mode.CUPY:
                 import cupy
                 self.start_gpu = cupy.cuda.Event()
                 self.end_gpu = cupy.cuda.Event()
@@ -117,8 +99,8 @@ class timed_region:
             else:
                 self.cupy = False
             global times, excluded
-            if region_name:
-                self.key = region_name
+            if key:
+                self.key = key
             else:
                 parent = inspect.stack()[1]
                 self.key = parent.filename.split('/')[-1]
@@ -140,9 +122,9 @@ class timed_region:
     def __enter__(self):
         global mode
 
-        if mode == 'disabled':
+        if mode == Mode.OFF:
             return self
-        elif mode in ['timing', 'cupy']:
+        elif mode in [Mode.ON, Mode.CUPY]:
             ls = timer()
             global times, excluded
 
@@ -160,9 +142,9 @@ class timed_region:
     def __exit__(self, type, value, traceback):
         global mode
 
-        if mode == 'disabled':
+        if mode == Mode.OFF:
             return
-        elif mode in ['timing', 'cupy']:
+        elif mode in [Mode.ON, Mode.CUPY]:
             te = timer()
             global times, excluded
             if self.cupy:
@@ -183,9 +165,9 @@ class timed_region:
 
 def start_timing(funcname=''):
     global func_stack, start_time_stack, disabled, times, mode
-    if mode == 'disabled':
+    if mode == Mode.OFF:
         return
-    elif mode in ['timing', 'cupy']:
+    elif mode in [Mode.ON, Mode.CUPY]:
         ts = timer()
         if funcname:
             key = funcname
@@ -205,9 +187,9 @@ def start_timing(funcname=''):
 
 def stop_timing(exclude=False):
     global times, start_time_stack, func_stack, excluded, mode
-    if mode == 'disabled':
+    if mode == Mode.OFF:
         return
-    elif mode in ['timing', 'cupy']:
+    elif mode in [Mode.ON, Mode.CUPY]:
         ts = timer()
 
         elapsed = (timer() - start_time_stack.pop()) * 1000
@@ -229,9 +211,9 @@ def report(skip=0, total_time=None, out_file=None, out_dir='./',
            save_pickle=False):
     global times, excluded, mode
 
-    if mode == 'disabled':
+    if mode == Mode.OFF:
         return
-    elif mode in ['timing', 'cupy']:
+    elif mode in [Mode.ON, Mode.CUPY]:
         if out_file:
             if not os.path.exists(out_dir):
                 os.makedirs(out_dir, exist_ok=True)
@@ -316,7 +298,7 @@ def report(skip=0, total_time=None, out_file=None, out_dir='./',
 
         if out_file:
             out.close()
-    elif mode == 'line_profiler':
+    elif mode == Mode.LINEPROFILER:
         lp.print_stats()
     else:
         raise RuntimeError('[timing:report] mode: %s not available' % mode)
@@ -335,7 +317,7 @@ def reset():
 def get(lst, exclude_lst=[]):
     global times, mode, excluded
     total = 0
-    if mode != 'disabled':
+    if mode != Mode.OFF:
         for k, v in times.items():
             if (k in excluded) or (k in exclude_lst):
                 continue

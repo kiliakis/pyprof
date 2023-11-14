@@ -1,14 +1,16 @@
 import numpy as np
 
 from pyprof import timing
-timing.mode = 'timing'  # other modes available: 'disabled', 'line_profiler'
 num = 10000
 
 # Method 1, wrapper
 
 
-@timing.timeit(filename='example.py', classname='', key='foo')
+@timing.timeit(key='foo')
 def foo(num):
+    return np.sum(np.random.randn(num))
+
+def bar(num):
     return np.sum(np.random.randn(num))
 
 
@@ -25,5 +27,10 @@ timing.start_timing('start_stop')
 b = np.sum(np.random.randn(num))
 timing.stop_timing()
 # ----------
+
+# Method 4, overwrite function
+bar = timing.timeit(key='bar')(bar)
+
+b = bar(num)
 
 timing.report()
