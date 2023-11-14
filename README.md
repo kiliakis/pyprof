@@ -8,7 +8,6 @@ A collection of python profiling utilities.
 import numpy as np
 
 from pyprof import timing
-timing.mode = 'timing'  # other modes available: 'disabled', 'line_profiler'
 num = 100
 
 # Method 1, wrapper
