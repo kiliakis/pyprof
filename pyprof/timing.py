@@ -85,7 +85,7 @@ def timeit(key=None, exclude=False):
 
 class timed_region:
 
-    def __init__(self, key=None, is_child_function=False):
+    def __init__(self, key=None, exclude=False):
         global mode
         if mode == Mode.OFF:
             return
@@ -109,7 +109,7 @@ class timed_region:
             if (self.key not in times):
                 times[self.key] = []
 
-            if is_child_function == True:
+            if exclude is True:
                 excluded.append(self.key)
 
             if 'lib_time' not in times:
@@ -196,7 +196,7 @@ def stop_timing(exclude=False):
         key = func_stack.pop()
         if(key not in times):
             times[key] = []
-            if exclude == True:
+            if exclude is True:
                 excluded.append(key)
         times[key].append(elapsed)
         if 'lib_time' not in times:
